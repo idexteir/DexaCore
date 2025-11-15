@@ -1,54 +1,48 @@
-DexaCore.events.on("core:ready", () => {
-class Nav {
-    static init() {
-        if (!DexaCore.session.isLoggedIn()) return;
+document.addEventListener("DOMContentLoaded", async () => {
 
-        // Inject nav only once
-        if (!document.querySelector(".nav-bar")) {
-            fetch("ui/nav.html")
-                .then(r => r.text())
-                .then(html => {
-                    const wrapper = document.createElement("div");
-                    wrapper.innerHTML = html;
-                    document.body.prepend(wrapper);
-                    Nav.updateUserEmail();
-                    Nav.highlightActive();
-                });
+    const navContainer = document.createElement("nav");
+    navContainer.classList.add("nav-bar");
+    document.body.prepend(navContainer);
+
+    async function renderNav() {
+
+        const user = await DexaCore.auth.getUser();
+
+        navContainer.innerHTML = "";
+
+        let links = [];
+
+        if (!user) {
+            links = DexaNavConfig.publicLinks;
         } else {
-            Nav.updateUserEmail();
-            Nav.highlightActive();
+            links = [...DexaNavConfig.privateLinks];
+
+            if (DexaCore.roles.is("admin")) {
+                links = [...links, ...DexaNavConfig.adminLinks];
+            }
+        }
+
+        for (const link of links) {
+            const a = document.createElement("a");
+            a.textContent = link.label;
+
+            if (link.page === "logout") {
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    DexaCore.auth.logout();
+                };
+            } else {
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    DexaCore.router.go(link.page);
+                };
+            }
+
+            navContainer.appendChild(a);
         }
     }
 
-    static updateUserEmail() {
-        const user = DexaCore.session.getUser();
-        if (user && user.email) {
-            const el = document.querySelector("#navUserEmail");
-            if (el) el.innerText = user.email;
-        }
-    }
-
-    static highlightActive() {
-        const links = document.querySelectorAll(".nav-links a");
-        links.forEach(link => {
-            const route = link.getAttribute("data-route");
-            link.classList.toggle("active", location.pathname === route);
-        });
-    }
-
-    static go(path) {
-        DexaCore.router.go(path);
-        return false;
-    }
-
-    static toggleMenu() {
-        const menu = document.querySelector(".nav-links");
-        if (menu) menu.classList.toggle("show");
-    }
-}
-
-/* Re-run on every page load */
-DexaCore.events.on("page:loaded", () => {
-    Nav.init();
-});
+    DexaCore.events.on("core:ready", renderNav);
+    DexaCore.events.on("auth:change", renderNav);
+    DexaCore.events.on("page:loaded", renderNav);
 });

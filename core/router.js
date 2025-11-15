@@ -1,10 +1,13 @@
 class DexaRouter {
     constructor() {
 
-        // Adjust if repo name changes
+        // Repo base (works for GitHub Pages)
         this.BASE = "/DexaCore/";
 
-        // Bind browser navigation
+        // Define which pages are public
+        this.PUBLIC_PAGES = ["", "home", "login"];
+
+        // Listen to browser navigation
         window.addEventListener("popstate", () => this.handle(location.pathname));
 
         // First load
@@ -12,19 +15,19 @@ class DexaRouter {
     }
 
     normalize(path) {
-        // Remove base folder (GitHub Pages)
+        // Remove repo base
         if (path.startsWith(this.BASE)) {
             path = path.substring(this.BASE.length);
         }
 
-        // Strip query string
+        // Remove query parameters
         path = path.split("?")[0];
 
         // Remove leading slash
         path = path.replace(/^\//, "");
 
-        // Default landing page
-        if (path === "") return "dashboard";
+        // Default page = HOME
+        if (path === "") return "home";
 
         return path;
     }
@@ -32,7 +35,15 @@ class DexaRouter {
     async handle(path) {
         const page = this.normalize(path);
 
-        // Path to .page.html
+        // 1️⃣ AUTH CHECK BEFORE LOADING PAGE
+        if (!this.PUBLIC_PAGES.includes(page)) {
+            const user = await DexaCore.auth.getUser();
+            if (!user) {
+                return this.go("login");
+            }
+        }
+
+        // 2️⃣ LOAD PAGE FILE
         const pageUrl = `${this.BASE}modules/${page}/${page}.page.html`;
 
         try {
@@ -41,12 +52,11 @@ class DexaRouter {
                 return r.text();
             });
 
+            // Inject into app container
             document.querySelector("#app").innerHTML = html;
 
-            // Notify the app
-            if (window.DexaCore?.events) {
-                DexaCore.events.emit("page:loaded", page);
-            }
+            // Notify components
+            DexaCore.events.emit("page:loaded", page);
 
         } catch (e) {
             document.querySelector("#app").innerHTML = "<h2>404 Not Found</h2>";
@@ -54,7 +64,7 @@ class DexaRouter {
     }
 
     go(path) {
-        // Strip leading slash (avoid //)
+        // Clean slashes
         path = path.replace(/^\//, "");
 
         history.pushState(null, "", this.BASE + path);

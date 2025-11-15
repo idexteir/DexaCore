@@ -1,47 +1,30 @@
 DexaCore.events.on("core:ready", () => {
-class DexaAuth {
-    constructor() {
-        this.supabase = DexaSupabase;
-    }
 
-    async login(email, password) {
-        DexaLoading.show("Signing in...");
-
-        try {
-            const user = await this.supabase.signIn(email, password);
-            const session = await this.supabase.getSession();
-
-            // Fetch user role from DB
-            const users = await DexaCore.supabase.select("users", { id: user.id });
-            const userRecord = users[0];
-
-            // Load roles table and map user’s role
-            await DexaCore.roles.loadRoles();
-            DexaCore.roles.setUserRole(userRecord.role || "user");
-
-            DexaCore.session.setUser({
-                id: user.id,
-                email: user.email,
-                token: session.access_token,
-                role: userRecord.role || "user",
-                permissions: DexaCore.roles.userPermissions
+    class DexaAuth {
+    
+        async loginWithGoogle() {
+            await DexaSupabase.client.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: window.location.origin + "/DexaCore/"
+                }
             });
-
-            DexaLoading.hide();
-            DexaToast.success("Welcome!");
-
-            DexaCore.router.go("/dashboard");
-
-        } catch (err) {
-            DexaLoading.hide();
-            DexaToast.error(err.message);
+        }
+    
+        async logout() {
+            await DexaSupabase.client.auth.signOut();
+            DexaCore.session.clear();
+            DexaCore.events.emit("auth:change", null);
+            DexaCore.router.go("login");
+        }
+    
+        async getUser() {
+            const { data } = await DexaSupabase.client.auth.getUser();
+            return data?.user || null;
         }
     }
-
-    logout() {
-        DexaCore.session.clear();
-        DexaCore.router.go("/login");
-    }
-}
-DexaCore.auth = new DexaAuth();
-});
+    
+    DexaCore.auth = new DexaAuth();
+    
+    });
+    

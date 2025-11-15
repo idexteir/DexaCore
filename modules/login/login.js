@@ -1,24 +1,11 @@
-class LoginPage {
-    static init() {
-        const form = document.querySelector("#loginForm");
+DexaCore.events.on("page:loaded", (page) => {
+    if (page !== "login") return;
 
-        form.onsubmit = async (e) => {
-            e.preventDefault();
+    const btn = document.getElementById("google-login");
 
-            const values = DexaForm.getValues("#loginForm");
-
-            const error = DexaForm.validate({
-                email: { required: true, email: true, label: "Email" },
-                password: { required: true, label: "Password" }
-            }, values);
-
-            if (error) return DexaToast.error(error);
-
-            await DexaCore.auth.login(values.email, values.password);
+    if (btn) {
+        btn.onclick = () => {
+            DexaCore.auth.loginWithGoogle();
         };
     }
-}
-
-DexaCore.events.on("page:loaded", (path) => {
-    if (path === "/login") LoginPage.init();
 });

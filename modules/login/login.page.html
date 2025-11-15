@@ -1,24 +1,13 @@
-<link rel="stylesheet" href="modules/login/login.css">
+<link rel="stylesheet" href="assets/login.css">
 
-<div class="auth-bg"></div>
+<div class="login-container">
+    <div class="login-card">
+        <h2>Welcome</h2>
+        <p class="login-text">Sign in to continue</p>
 
-<div class="auth-container">
-    <div class="auth-card">
-        <h2>Welcome Back</h2>
-        <p class="subtitle">Sign in to continue</p>
-
-        <form id="loginForm">
-            <input type="email" name="email" placeholder="Email" autocomplete="email">
-            <input type="password" name="password" placeholder="Password" autocomplete="current-password">
-
-            <button type="submit" class="auth-btn">Login</button>
-        </form>
-
-        <div class="auth-footer">
-            Don't have an account?
-            <a href="/register" onclick="DexaCore.router.go('/register'); return false;">Register</a>
-        </div>
+        <button id="google-login" class="google-btn">
+            <img src="assets/google.svg" alt="Google">
+            Continue with Google
+        </button>
     </div>
 </div>
-
-<script src="modules/login/login.js"></script>
