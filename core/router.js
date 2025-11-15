@@ -1,26 +1,46 @@
 class DexaRouter {
     constructor() {
-        this.routes = {};
-        window.addEventListener("popstate", () => this.load(location.pathname));
-        this.load(location.pathname);
+
+        // Detect GitHub Pages base path automatically
+        this.BASE = "/DexaCore/";  // your repo name
+
+        window.addEventListener("popstate", () => this.handle(location.pathname));
+        this.handle(location.pathname);
     }
 
-    async load(path) {
-        if (!path || path === "/") path = "/login";
+    normalize(path) {
+        // Remove base (/DexaCore/)
+        if (path.startsWith(this.BASE)) {
+            path = path.substring(this.BASE.length);
+        }
 
-        const page = `modules/${path.replace("/", "")}/${path.replace("/", "")}.page.html`;
+        // Default redirect
+        if (path === "" || path === "/") return "login";
+
+        // Remove leading slash
+        return path.replace("/", "");
+    }
+
+    async handle(path) {
+        const page = this.normalize(path);
+
+        const pageUrl = `${this.BASE}modules/${page}/${page}.page.html`;
 
         try {
-            const html = await fetch(page).then(r => r.text());
+            const html = await fetch(pageUrl).then(r => r.text());
             document.querySelector("#app").innerHTML = html;
-            DexaCore.events.emit("page:loaded", path);
+
+            // Notify DexaCore that page finished loading
+            DexaCore.events.emit("page:loaded", page);
+
         } catch (e) {
             document.querySelector("#app").innerHTML = "<h2>404 Not Found</h2>";
         }
     }
 
     go(path) {
-        history.pushState(null, "", path);
-        this.load(path);
+        // Always push with base
+        history.pushState(null, "", this.BASE + path);
+        this.handle(path);
     }
 }
