@@ -1,0 +1,95 @@
+/* ---------- Modal ---------- */
+.dexacore-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.dexacore-modal {
+    background: #fff;
+    padding: 20px;
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.dexacore-modal h3 {
+    margin-top: 0;
+}
+
+/* Buttons */
+.modal-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.modal-btn {
+    padding: 8px 14px;
+    margin-left: 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.modal-btn.confirm {
+    background: #2563eb;
+    color: #fff;
+}
+
+.modal-btn.cancel {
+    background: #e2e8f0;
+}
+
+/* ---------- Toast ---------- */
+.dexacore-toast {
+    position: fixed;
+    left: 50%;
+    bottom: -60px;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: white;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 3000;
+    font-weight: 600;
+}
+
+.dexacore-toast.show {
+    bottom: 30px;
+    opacity: 1;
+}
+
+.dexacore-toast.info { background: #3b82f6; }
+.dexacore-toast.success { background: #10b981; }
+.dexacore-toast.error { background: #ef4444; }
+
+/* ---------- Loading ---------- */
+.dexacore-loading {
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 4000;
+}
+
+.dexacore-loading .loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ccc;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

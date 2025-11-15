@@ -1,0 +1,19 @@
+<div class="nav-bar">
+    <div class="nav-left">
+        <div class="nav-logo" onclick="DexaCore.router.go('/dashboard')">
+            DexaCore
+        </div>
+
+        <button class="nav-toggle" onclick="Nav.toggleMenu()">☰</button>
+
+        <div class="nav-links">
+            <a href="/dashboard" data-route="/dashboard" onclick="Nav.go('/dashboard')">Dashboard</a>
+            <a href="/example" data-route="/example" onclick="Nav.go('/example')">Example</a>
+        </div>
+    </div>
+
+    <div class="nav-right">
+        <span id="navUserEmail"></span>
+        <button class="logout-btn" onclick="DexaCore.auth.logout()">Logout</button>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="modules/notes/notes.css">
+
+<div class="notes-container">
+
+    <div class="notes-header">
+        <h2>Notes</h2>
+        <button class="btn-primary" onclick="NotesPage.openForm()">+ Add Note</button>
+    </div>
+
+    <!-- Notes List -->
+    <div id="notesList" class="notes-list"></div>
+
+</div>
+
+<!-- Modal Template -->
+<div id="noteModal" class="note-modal hidden">
+    <div class="note-modal-content">
+
+        <h3 id="modalTitle">Add Note</h3>
+
+        <form id="noteForm">
+            <input type="hidden" name="id">
+
+            <label>Title</label>
+            <input type="text" name="title">
+
+            <label>Content</label>
+            <textarea name="content"></textarea>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="NotesPage.closeForm()">Cancel</button>
+                <button type="submit" class="btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="modules/notes/notes.js"></script>

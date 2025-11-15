@@ -1,0 +1,55 @@
+.dash-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.dash-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.dash-header h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.welcome {
+    color: #555;
+    font-size: 15px;
+    margin: 0 15px;
+}
+
+.logout-btn {
+    padding: 8px 16px;
+    border: none;
+    background: #ef4444;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+.logout-btn:hover {
+    opacity: 0.85;
+}
+
+.dash-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.dash-card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}

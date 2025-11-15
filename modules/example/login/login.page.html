@@ -1,0 +1,24 @@
+<link rel="stylesheet" href="modules/login/login.css">
+
+<div class="auth-bg"></div>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to continue</p>
+
+        <form id="loginForm">
+            <input type="email" name="email" placeholder="Email" autocomplete="email">
+            <input type="password" name="password" placeholder="Password" autocomplete="current-password">
+
+            <button type="submit" class="auth-btn">Login</button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account?
+            <a href="/register" onclick="DexaCore.router.go('/register'); return false;">Register</a>
+        </div>
+    </div>
+</div>
+
+<script src="modules/login/login.js"></script>

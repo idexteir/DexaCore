@@ -1,0 +1,31 @@
+.err-container {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    padding: 20px;
+}
+
+.err-container h1 {
+    font-size: 72px;
+    color: #ef4444;
+    margin: 0;
+}
+
+.err-container p {
+    color: #555;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}

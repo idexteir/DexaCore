@@ -1,0 +1,95 @@
+/* Navigation Bar */
+.nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(14px);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 22px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Left section */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav-logo {
+    font-weight: 700;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Links */
+.nav-links a {
+    margin-right: 16px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.nav-links a.active {
+    color: #2563eb;
+    font-weight: 700;
+}
+
+/* Right section */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#navUserEmail {
+    color: #555;
+    font-size: 14px;
+}
+
+/* Logout Button */
+.logout-btn {
+    padding: 6px 12px;
+    border: none;
+    background: #ef4444;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Mobile */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+@media (max-width: 700px) {
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background: rgba(255,255,255,0.9);
+        position: absolute;
+        left: 0;
+        top: 60px;
+        width: 100%;
+        padding: 15px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-toggle {
+        display: block;
+    }
+}

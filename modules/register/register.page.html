@@ -1,0 +1,25 @@
+<link rel="stylesheet" href="modules/register/register.css">
+
+<div class="auth-bg"></div>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Create Account</h2>
+        <p class="subtitle">Join the platform</p>
+
+        <form id="registerForm">
+            <input type="email" name="email" placeholder="Email" autocomplete="email">
+            <input type="password" name="password" placeholder="Password" autocomplete="new-password">
+            <input type="password" name="confirm" placeholder="Confirm Password" autocomplete="new-password">
+
+            <button type="submit" class="auth-btn">Create Account</button>
+        </form>
+
+        <div class="auth-footer">
+            Already have an account?
+            <a href="/login" onclick="DexaCore.router.go('/login'); return false;">Login</a>
+        </div>
+    </div>
+</div>
+
+<script src="modules/register/register.js"></script>
