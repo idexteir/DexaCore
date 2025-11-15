@@ -1,16 +1,15 @@
-DexaCore.events.on("core:ready", () => {
-class DashboardPage {
-    static init() {
-        // Require login
-        if (!DexaCore.session.isLoggedIn()) {
-            DexaCore.router.go("/login");
-            return;
+window.addEventListener("core:ready", () => {
+
+    DexaCore.events.on("page:loaded", (page) => {
+        if (page !== "login") return;
+
+        const btn = document.getElementById("google-login");
+
+        if (btn) {
+            btn.onclick = () => {
+                DexaCore.auth.loginWithGoogle();
+            };
         }
-        const user = DexaCore.session.getUser();
-        document.querySelector("#dashUserEmail").innerText = user.email || "User";
-    }
-}
-DexaCore.events.on("page:loaded", (path) => {
-    if (path === "/dashboard") DashboardPage.init();
-});
+    });
+
 });

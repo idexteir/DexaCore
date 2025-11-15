@@ -1,7 +1,11 @@
-DexaCore.events.on("page:loaded", (page) => {
-    if (page !== "home") return;
+window.addEventListener("core:ready", () => {
 
-    document.querySelectorAll("[data-go]").forEach(btn => {
-        btn.onclick = () => DexaCore.router.go(btn.dataset.go);
+    DexaCore.events.on("page:loaded", (page) => { 
+        if (page !== "home") return;
+
+        document.querySelectorAll("[data-go]").forEach(btn => {
+            btn.onclick = () => DexaCore.router.go(btn.dataset.go);
+        });
     });
+
 });

@@ -1,11 +1,11 @@
-DexaCore.events.on("page:loaded", (page) => {
-    if (page !== "login") return;
+window.addEventListener("core:ready", () => {
 
-    const btn = document.getElementById("google-login");
+    DexaCore.events.on("page:loaded", (page) => { 
+        if (page !== "home") return;
 
-    if (btn) {
-        btn.onclick = () => {
-            DexaCore.auth.loginWithGoogle();
-        };
-    }
+        document.querySelectorAll("[data-go]").forEach(btn => {
+            btn.onclick = () => DexaCore.router.go(btn.dataset.go);
+        });
+    });
+
 });
