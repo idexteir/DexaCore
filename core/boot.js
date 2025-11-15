@@ -3,19 +3,44 @@ window.DexaCore = {
     async init() {
         console.log("%c[DexaCore] Booting...", "color:#4caf50");
 
-        this.config = DexaCoreConfig;
+        // Load config
+        this.config = window.DexaCoreConfig;
 
+        // Core systems
         this.events = new DexaEvents();
+        this.storage = new DexaStorage();
         this.session = new DexaSession();
-        this.router = new DexaRouter();
-        this.supabase = new DexaSupabase();
+
+        // Supabase (singleton object, NOT a constructor)
+        if (typeof DexaSupabase === "object") {
+            DexaSupabase.init();
+            this.supabase = DexaSupabase;
+        } else {
+            console.error("DexaSupabase is missing or not loaded.");
+        }
+
+        // Auth system
         this.auth = new DexaAuth();
-        this.roles = new DexaRoles();
-        this.permissions = new DexaPermissions();
 
-        // Load role definitions
-        await this.roles.loadRoles();
+        // Permissions
+        if (typeof DexaPermissions === "function") {
+            this.permissions = new DexaPermissions();
+        } else {
+            console.warn("DexaPermissions not found.");
+        }
 
+        // Roles (optional)
+        if (typeof DexaRoles === "function") {
+            this.roles = new DexaRoles();
+            await this.roles.loadRoles();
+        } else {
+            console.warn("DexaRoles not found (skipping).");
+        }
+
+        // Router (must be last)
+        this.router = new DexaRouter();
+
+        // Completed
         this.ready();
     },
 

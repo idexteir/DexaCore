@@ -1,0 +1,22 @@
+# OS
+auto-save/
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Logs and secrets
+*.log
+*.env
+.env.*
+
+# Optional: npm/yarn
+node_modules/
+
+# Optional: build artifacts
+dist/
+build/
