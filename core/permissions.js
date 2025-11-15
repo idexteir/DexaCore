@@ -1,20 +1,16 @@
-DexaCore.events.on("core:ready", () => {
 class DexaPermissions {
-    has(perm) { return DexaCore.roles.has(perm); }
-    require(perm) {
-        if (!DexaCore.roles.has(perm)) {
-            DexaCore.router.go("/403");
-            return false;
-        }
-        return true;
+    constructor() {
+        this.current = [];
     }
-    applyDOMPermissions() {
-        document.querySelectorAll("[data-permission]").forEach(el => {
-            const p = el.getAttribute("data-permission");
-            if (!this.has(p)) { el.style.display = "none"; }
-        });
+
+    load(role) {
+        if (!DexaCore.roles) return;
+        this.current = DexaCore.roles.getPermissions(role) || [];
+    }
+
+    has(perm) {
+        return this.current.includes(perm);
     }
 }
-DexaCore.permissions = new DexaPermissions();
-DexaCore.events.on("page:loaded", () => { DexaCore.permissions.applyDOMPermissions(); });
-});
+
+window.DexaPermissions = DexaPermissions;

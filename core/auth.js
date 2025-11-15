@@ -1,30 +1,21 @@
-DexaCore.events.on("core:ready", () => {
+DexaCore?.events?.on("core:ready", () => {
 
     class DexaAuth {
-    
-        async loginWithGoogle() {
-            await DexaSupabase.client.auth.signInWithOAuth({
-                provider: "google",
-                options: {
-                    redirectTo: window.location.origin + "/DexaCore/"
-                }
-            });
+        constructor() {
+            this.supabase = DexaSupabase;
         }
-    
-        async logout() {
-            await DexaSupabase.client.auth.signOut();
-            DexaCore.session.clear();
-            DexaCore.events.emit("auth:change", null);
-            DexaCore.router.go("login");
-        }
-    
+
         async getUser() {
-            const { data } = await DexaSupabase.client.auth.getUser();
+            const { data } = await this.supabase.client.auth.getUser();
             return data?.user || null;
         }
+
+        async logout() {
+            await this.supabase.client.auth.signOut();
+            DexaCore.session.clear();
+            DexaCore.router.go("/login");
+        }
     }
-    
+
     DexaCore.auth = new DexaAuth();
-    
-    });
-    
+});
