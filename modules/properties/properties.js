@@ -149,6 +149,8 @@ class PropertiesPage {
 
 
 /* Auto-init when /properties loads */
-DexaCore.events.on("page:loaded", (path) => {
-    if (path === "/properties") PropertiesPage.init();
+DexaCore.events.on("core:ready", () => {
+    DexaCore.events.on("page:loaded", (path) => {
+        if (path === "/properties") PropertiesPage.init();
+    });
 });

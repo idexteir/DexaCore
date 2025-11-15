@@ -1,3 +1,4 @@
+DexaCore.events.on("core:ready", () => {
 class Nav {
     static init() {
         if (!DexaCore.session.isLoggedIn()) return;
@@ -49,4 +50,5 @@ class Nav {
 /* Re-run on every page load */
 DexaCore.events.on("page:loaded", () => {
     Nav.init();
+});
 });

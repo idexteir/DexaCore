@@ -12,6 +12,8 @@
 
     <!-- Theme -->
     <link rel="stylesheet" href="assets/theme.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src *;">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
 <body>
@@ -20,6 +22,8 @@
 
     <!-- Config -->
     <script src="config.js"></script>
+    <!-- Supabase CDN - must come BEFORE core/supabase.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Utils -->
     <script src="utils/dom.js"></script>
@@ -37,6 +41,8 @@
     <script src="core/router.js"></script>
     <script src="core/auth.js"></script>
     <script src="core/permissions.js"></script>
+    <script src="core/roles.js"></script>
+    <script src="core/boot.js"></script>
 
     <!-- UI -->
     <script src="ui/modal.js"></script>
@@ -55,9 +61,7 @@
     <script src="modules/register/register.js"></script>
     <script src="modules/properties/properties.js"></script>
     <script src="modules/notes/notes.js"></script>
-
-    <!-- Boot (last) -->
-    <script src="core/boot.js"></script>
+    <script src="modules/notes/note.js"></script>
 
 </body>
 </html>

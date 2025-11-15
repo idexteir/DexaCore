@@ -1,6 +1,7 @@
+DexaCore.events.on("core:ready", () => {
 class DexaAuth {
     constructor() {
-        this.supabase = new DexaSupabase();
+        this.supabase = DexaSupabase;
     }
 
     async login(email, password) {
@@ -42,3 +43,5 @@ class DexaAuth {
         DexaCore.router.go("/login");
     }
 }
+DexaCore.auth = new DexaAuth();
+});

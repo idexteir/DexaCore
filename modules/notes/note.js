@@ -2,6 +2,7 @@
     Register Entity
 -------------------------------------------------------- */
 
+DexaCore.events.on("core:ready", () => {
 Entities.register("Note", {
     title: "Notes",
     table: "notes",
@@ -10,8 +11,8 @@ Entities.register("Note", {
         title: { required: true, label: "Title" },
         content: { required: true, label: "Content" }
     },
-    permissions: {},   // We will add permissions later (Phase 6)
-    useDB: true         // True = use Supabase; falls back to local
+    permissions: {},
+    useDB: true
 });
 
 
@@ -130,4 +131,5 @@ class NotesPage {
 /* Auto-init when page loaded */
 DexaCore.events.on("page:loaded", (path) => {
     if (path === "/notes") NotesPage.init();
+});
 });
