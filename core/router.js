@@ -1,37 +1,52 @@
 class DexaRouter {
     constructor() {
 
-        // Detect GitHub Pages base path automatically
-        this.BASE = "/DexaCore/";  // your repo name
+        // Adjust if repo name changes
+        this.BASE = "/DexaCore/";
 
+        // Bind browser navigation
         window.addEventListener("popstate", () => this.handle(location.pathname));
+
+        // First load
         this.handle(location.pathname);
     }
 
     normalize(path) {
-        // Remove base (/DexaCore/)
+        // Remove base folder (GitHub Pages)
         if (path.startsWith(this.BASE)) {
             path = path.substring(this.BASE.length);
         }
 
-        // Default redirect
-        if (path === "" || path === "/") return "login";
+        // Strip query string
+        path = path.split("?")[0];
 
         // Remove leading slash
-        return path.replace("/", "");
+        path = path.replace(/^\//, "");
+
+        // Default landing page
+        if (path === "") return "dashboard";
+
+        return path;
     }
 
     async handle(path) {
         const page = this.normalize(path);
 
+        // Path to .page.html
         const pageUrl = `${this.BASE}modules/${page}/${page}.page.html`;
 
         try {
-            const html = await fetch(pageUrl).then(r => r.text());
+            const html = await fetch(pageUrl).then(r => {
+                if (!r.ok) throw new Error("Not found");
+                return r.text();
+            });
+
             document.querySelector("#app").innerHTML = html;
 
-            // Notify DexaCore that page finished loading
-            DexaCore.events.emit("page:loaded", page);
+            // Notify the app
+            if (window.DexaCore?.events) {
+                DexaCore.events.emit("page:loaded", page);
+            }
 
         } catch (e) {
             document.querySelector("#app").innerHTML = "<h2>404 Not Found</h2>";
@@ -39,7 +54,9 @@ class DexaRouter {
     }
 
     go(path) {
-        // Always push with base
+        // Strip leading slash (avoid //)
+        path = path.replace(/^\//, "");
+
         history.pushState(null, "", this.BASE + path);
         this.handle(path);
     }
