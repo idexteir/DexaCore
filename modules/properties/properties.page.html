@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="/modules/properties/properties.css">
+
+<div class="prop-container">
+
+    <div class="prop-header">
+        <h2>Properties</h2>
+        <button class="btn-primary" onclick="PropertiesPage.openForm()">+ Add Property</button>
+    </div>
+
+    <!-- Filters -->
+    <div class="prop-filters">
+        <input id="searchInput" type="text" placeholder="Search by title...">
+
+        <select id="typeFilter">
+            <option value="">All Types</option>
+            <option value="Chalet">Chalet</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Villa">Villa</option>
+            <option value="Farmhouse">Farmhouse</option>
+        </select>
+
+        <select id="statusFilter">
+            <option value="">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Hidden">Hidden</option>
+        </select>
+
+        <button class="btn-small" onclick="PropertiesPage.loadList()">Filter</button>
+    </div>
+
+    <!-- List -->
+    <div id="propList" class="prop-list"></div>
+
+</div>
+
+<!-- Modal -->
+<div id="propModal" class="prop-modal hidden">
+    <div class="prop-modal-content">
+
+        <h3 id="modalTitle">Add Property</h3>
+
+        <form id="propForm">
+            <input type="hidden" name="id">
+
+            <label>Title</label>
+            <input type="text" name="title">
+
+            <label>Description</label>
+            <textarea name="description"></textarea>
+
+            <label>Price (SAR)</label>
+            <input type="number" name="price" min="0">
+
+            <label>Property Type</label>
+            <select name="type">
+                <option>Chalet</option>
+                <option>Apartment</option>
+                <option>Villa</option>
+                <option>Farmhouse</option>
+            </select>
+
+            <label>Status</label>
+            <select name="status">
+                <option>Active</option>
+                <option>Hidden</option>
+            </select>
+
+            <label>Location</label>
+            <input type="text" name="location">
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="PropertiesPage.closeForm()">Cancel</button>
+                <button type="submit" class="btn-primary">Save</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script src="/modules/properties/properties.js"></script>

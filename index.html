@@ -6,48 +6,55 @@
     <title>DexaCore</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="ui/nav.css">
-    <script src="ui/nav.js"></script>   
-    <link rel="stylesheet" href="assets/styles.css">
-    <link rel="stylesheet" href="ui/components.css">
+    <link rel="stylesheet" href="/ui/nav.css">
+    <link rel="stylesheet" href="/assets/styles.css">
+    <link rel="stylesheet" href="/ui/components.css">
 
-    <!-- Theme (can be overridden by any project using DexaCore) -->
-    <link rel="stylesheet" href="assets/theme.css">
+    <!-- Theme -->
+    <link rel="stylesheet" href="/assets/theme.css">
 </head>
 
 <body>
 
     <div id="app"></div>
 
-    <!-- Boot configuration -->
-    <script src="config.js"></script>
+    <!-- Config -->
+    <script src="/config.js"></script>
 
-    <!-- Core -->
-    <script src="core/boot.js"></script>
-    <script src="core/events.js"></script>
-    <script src="core/router.js"></script>
-    <script src="core/session.js"></script>
-    <script src="core/auth.js"></script>
-    <script src="core/permissions.js"></script>
-    <script src="core/storage.js"></script>
+    <!-- Utils (must load first) -->
+    <script src="/utils/dom.js"></script>
+    <script src="/utils/debug.js"></script>
+    <script src="/utils/helpers.js"></script>
+    <script src="/utils/validator.js"></script>
+
+    <!-- DexaSupabase (MUST load before core) -->
+    <script src="/core/supabase.js"></script>
+
+    <!-- Core (correct order) -->
+    <script src="/core/events.js"></script>
+    <script src="/core/storage.js"></script>
+    <script src="/core/session.js"></script>
+    <script src="/core/router.js"></script>
+    <script src="/core/auth.js"></script>
+    <script src="/core/permissions.js"></script>
 
     <!-- UI -->
-    <script src="ui/modal.js"></script>
-    <script src="ui/toast.js"></script>
-    <script src="ui/loading.js"></script>
-    <script src="ui/forms.js"></script>
+    <script src="/ui/modal.js"></script>
+    <script src="/ui/toast.js"></script>
+    <script src="/ui/loading.js"></script>
+    <script src="/ui/forms.js"></script>
+    <script src="/ui/nav.js"></script>
 
-    <!-- Utils -->
-    <script src="utils/dom.js"></script>
-    <script src="utils/debug.js"></script>
-    <script src="utils/helpers.js"></script>
-    <script src="utils/validator.js"></script>
+    <!-- Data Layer -->
+    <script src="/data/entities.js"></script>
 
-    <!-- Data layer -->
-    <script src="data/entities.js"></script>
+    <!-- Modules -->
+    <script src="/modules/example/example.js"></script>
+    <script src="/modules/properties/properties.js"></script>
+    <script src="/modules/notes/notes.js"></script>
 
-    <!-- Example module -->
-    <script src="modules/example/example.js"></script>
+    <!-- Boot (MUST be last) -->
+    <script src="/core/boot.js"></script>
 
 </body>
 </html>

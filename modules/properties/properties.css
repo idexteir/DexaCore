@@ -1,0 +1,151 @@
+.prop-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 25px;
+}
+
+.prop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.prop-filters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.prop-filters input,
+.prop-filters select {
+    padding: 10px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+/* List */
+.prop-row {
+    background: var(--panel);
+    padding: 20px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+}
+
+.prop-info h4 {
+    margin: 0 0 6px 0;
+}
+
+.prop-info p {
+    margin: 0;
+    color: var(--text-light);
+    margin-top: 4px;
+}
+
+.badge {
+    background: var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-right: 6px;
+}
+
+.status-active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-hidden {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.location {
+    font-style: italic;
+}
+
+.price {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.prop-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-small {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+.btn-delete {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+/* Modal */
+.prop-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.prop-modal.hidden {
+    display: none;
+}
+
+.prop-modal-content {
+    background: var(--panel);
+    padding: 25px;
+    border-radius: var(--radius);
+    width: 90%;
+    max-width: 450px;
+    box-shadow: var(--shadow);
+}
+
+.prop-modal-content label {
+    font-weight: 600;
+    margin-top: 12px;
+    display: block;
+}
+
+.prop-modal-content input,
+.prop-modal-content textarea,
+.prop-modal-content select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-top: 4px;
+}
+
+.modal-actions {
+    margin-top: 18px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancel {
+    background: var(--border);
+    border: none;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+}
