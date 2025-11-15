@@ -1,18 +1,22 @@
+// ui/nav.config.js
+
 window.DexaNavConfig = {
 
-    publicLinks: [
-        { label: "Home", page: "home" },    // "" = home
-        { label: "Login", page: "login" },
+    public: [
+        { label: "Home", path: "/home" },
+        { label: "Login", path: "/login" }
     ],
 
-    privateLinks: [
-        { label: "Dashboard", page: "dashboard" },
-        { label: "Properties", page: "properties" },
-        { label: "Notes", page: "notes" },
-        { label: "Logout", page: "logout" }
+    user: [
+        { label: "Dashboard", path: "/dashboard" },
+        { label: "Properties", path: "/properties" },
+        { label: "Notes", path: "/notes" }
     ],
 
-    adminLinks: [
-        { label: "Admin Panel", page: "admin" }
+    admin: [
+        { label: "Admin Panel", path: "/admin" },
+        { label: "Dashboard", path: "/dashboard" },
+        { label: "Properties", path: "/properties" },
+        { label: "Notes", path: "/notes" }
     ]
 };

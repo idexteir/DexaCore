@@ -1,80 +1,47 @@
-<link rel="stylesheet" href="/modules/properties/properties.css">
+<div id="nav"></div>
 
-<div class="prop-container">
+<h2>Properties</h2>
 
-    <div class="prop-header">
-        <h2>Properties</h2>
-        <button class="btn-primary" onclick="PropertiesPage.openForm()">+ Add Property</button>
-    </div>
-
-    <!-- Filters -->
-    <div class="prop-filters">
-        <input id="searchInput" type="text" placeholder="Search by title...">
-
-        <select id="typeFilter">
-            <option value="">All Types</option>
-            <option value="Chalet">Chalet</option>
-            <option value="Apartment">Apartment</option>
-            <option value="Villa">Villa</option>
-            <option value="Farmhouse">Farmhouse</option>
-        </select>
-
-        <select id="statusFilter">
-            <option value="">All Status</option>
-            <option value="Active">Active</option>
-            <option value="Hidden">Hidden</option>
-        </select>
-
-        <button class="btn-small" onclick="PropertiesPage.loadList()">Filter</button>
-    </div>
-
-    <!-- List -->
-    <div id="propList" class="prop-list"></div>
-
+<div class="actions">
+    <button onclick="PropertiesPage.openForm()">Add Property</button>
 </div>
 
-<!-- Modal -->
-<div id="propModal" class="prop-modal hidden">
-    <div class="prop-modal-content">
+<input id="searchInput" placeholder="Search...">
 
-        <h3 id="modalTitle">Add Property</h3>
+<div class="filters">
+    <select id="typeFilter">
+        <option value="">All Types</option>
+        <option value="House">House</option>
+        <option value="Apartment">Apartment</option>
+        <option value="Land">Land</option>
+    </select>
+
+    <select id="statusFilter">
+        <option value="">All Status</option>
+        <option value="Available">Available</option>
+        <option value="Sold">Sold</option>
+    </select>
+</div>
+
+<div id="propList"></div>
+
+<!-- Modal -->
+<div id="propModal" class="modal hidden">
+    <div class="modal-content">
+        <h3 id="modalTitle"></h3>
 
         <form id="propForm">
             <input type="hidden" name="id">
 
-            <label>Title</label>
-            <input type="text" name="title">
+            <input name="title" placeholder="Title">
+            <textarea name="description" placeholder="Description"></textarea>
+            <input name="price" placeholder="Price">
+            <input name="type" placeholder="Type">
+            <input name="status" placeholder="Status">
+            <input name="location" placeholder="Location">
 
-            <label>Description</label>
-            <textarea name="description"></textarea>
-
-            <label>Price (SAR)</label>
-            <input type="number" name="price" min="0">
-
-            <label>Property Type</label>
-            <select name="type">
-                <option>Chalet</option>
-                <option>Apartment</option>
-                <option>Villa</option>
-                <option>Farmhouse</option>
-            </select>
-
-            <label>Status</label>
-            <select name="status">
-                <option>Active</option>
-                <option>Hidden</option>
-            </select>
-
-            <label>Location</label>
-            <input type="text" name="location">
-
-            <div class="modal-actions">
-                <button type="button" class="btn-cancel" onclick="PropertiesPage.closeForm()">Cancel</button>
-                <button type="submit" class="btn-primary">Save</button>
-            </div>
+            <button type="submit">Save</button>
+            <button type="button" onclick="PropertiesPage.closeForm()">Cancel</button>
         </form>
-
     </div>
 </div>
-
-<script src="/modules/properties/properties.js"></script>

@@ -1,77 +1,36 @@
-/* -----------------------------------------------------------
-   GLOBAL NAVIGATION BAR
------------------------------------------------------------ */
+/* ------------------------------------------------------
+   NAVIGATION BAR
+---------------------------------------------------------*/
 
-#navBar {
+#nav {
     width: 100%;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 12px 20px;
+    background: #fff;
+    padding: 15px 25px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: auto;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
+    align-items: center;
 }
 
-/* Logo */
 .nav-logo {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
-    color: #111827;
-    text-decoration: none;
+    cursor: pointer;
 }
 
-/* Links container */
-.nav-links {
-    display: flex;
-    gap: 16px;
-}
-
-/* Navigation links */
 .nav-links a {
-    padding: 8px 14px;
-    border-radius: 6px;
-    text-decoration: none;
-    color: #374151;
-    transition: 0.2s;
+    margin-left: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
 }
 
 .nav-links a:hover {
-    background: #f3f4f6;
-}
-
-/* Login / Logout Button */
-.nav-auth-btn {
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    background: #2563eb;
-    color: #fff;
-}
-
-.nav-auth-btn.logout {
-    background: #ef4444;
-}
-
-/* Push content down */
-body {
-    padding-top: 64px !important;
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-    #navBar {
-        flex-direction: column;
-        gap: 10px;
-        padding: 14px;
-    }
-    .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
+    color: var(--primary);
 }

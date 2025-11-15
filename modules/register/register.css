@@ -1,1 +1,27 @@
-@import url("../login/login.css");
+/* ------------------------------------------------------
+   REGISTER PAGE
+---------------------------------------------------------*/
+
+.register-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+.register-container h2 {
+    text-align: center;
+}
+
+#registerForm input {
+    margin-top: 10px;
+    padding: 12px;
+}
+
+#registerForm button {
+    background: var(--primary);
+    color: #fff;
+    margin-top: 20px;
+}

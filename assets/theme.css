@@ -1,58 +1,39 @@
-/* ------------------------------------------
-    DexaCore Theme System
--------------------------------------------*/
+/* ------------------------------------------------------
+   THEME COLORS
+---------------------------------------------------------*/
 
-/* LIGHT MODE (default) */
 :root {
     --primary: #2563eb;
-    --primary-hover: #1e4ec7;
-
-    --bg: #f5f7fa;
-    --panel: #ffffff;
-
-    --text: #0f172a;
-    --text-light: #475569;
-
-    --border: #e2e8f0;
-    --radius: 12px;
-
-    --shadow: 0 6px 20px rgba(0,0,0,0.08);
+    --primary-dark: #1e4fd6;
+    --secondary: #64748b;
+    --success: #10b981;
+    --danger: #ef4444;
 }
 
-/* DARK MODE */
-html.dark {
-    --primary: #60a5fa;
-    --primary-hover: #93c5fd;
-
-    --bg: #0d1117;
-    --panel: #161b22;
-
-    --text: #e2e8f0;
-    --text-light: #94a3b8;
-
-    --border: #30363d;
-    --radius: 12px;
-
-    --shadow: 0 6px 20px rgba(0,0,0,0.1);
-}
-
-
-/* GENERAL UI CLASSES (optional now) */
-.panel {
-    background: var(--panel);
-    padding: 20px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-}
-
+/* Buttons */
 .btn-primary {
     background: var(--primary);
     color: #fff;
-    padding: 10px 18px;
-    border-radius: var(--radius);
     border: none;
-    cursor: pointer;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
 }
+
 .btn-primary:hover {
-    background: var(--primary-hover);
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    background: #eee;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
 }

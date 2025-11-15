@@ -1,20 +1,12 @@
-<link rel="stylesheet" href="modules/dashboard/dashboard.css">
+<div id="nav"></div>
 
-<div class="dash-container">
+<div class="dashboard-container">
+    <h2>Dashboard</h2>
 
-    <div class="dash-header">
-        <h2>Dashboard</h2>
-        <p class="welcome">Welcome, <span id="dashUserEmail"></span></p>
-        <button class="logout-btn" onclick="DexaCore.auth.logout()">Logout</button>
+    <p>Welcome, <span id="dashUserEmail">Loading...</span></p>
+
+    <div class="dashboard-actions">
+        <button onclick="DexaCore.router.go('/properties')">Manage Properties</button>
+        <button onclick="DexaCore.router.go('/notes')">Manage Notes</button>
     </div>
-
-    <div class="dash-grid">
-        <div class="dash-card">Module 1 Placeholder</div>
-        <div class="dash-card">Module 2 Placeholder</div>
-        <div class="dash-card">Module 3 Placeholder</div>
-        <div class="dash-card">Module 4 Placeholder</div>
-    </div>
-
 </div>
-
-<script src="modules/dashboard/dashboard.js"></script>

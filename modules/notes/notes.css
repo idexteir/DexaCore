@@ -1,118 +1,25 @@
-.notes-container {
-    max-width: 850px;
-    margin: auto;
-    padding: 25px;
-}
+/* ------------------------------------------------------
+   NOTES PAGE
+---------------------------------------------------------*/
 
-.notes-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-}
-
-.notes-list .note-row {
-    background: var(--panel);
-    padding: 18px;
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.note-info h4 {
-    margin: 0 0 6px 0;
-}
-
-.note-info p {
-    margin: 0;
-    color: var(--text-light);
+.note-row {
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 10px 0;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
 .note-actions {
-    display: flex;
-    gap: 10px;
+    margin-top: 10px;
 }
 
 .btn-small {
-    background: var(--primary);
-    color: #fff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: var(--radius);
-    cursor: pointer;
+    padding: 8px 12px;
+    margin-right: 10px;
 }
 
 .btn-delete {
-    background: #ef4444;
+    background: var(--danger);
     color: #fff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: var(--radius);
-    cursor: pointer;
-}
-
-.empty {
-    text-align: center;
-    color: var(--text-light);
-    margin-top: 20px;
-}
-
-/* Modal */
-.note-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.45);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.note-modal.hidden {
-    display: none;
-}
-
-.note-modal-content {
-    background: var(--panel);
-    padding: 25px;
-    border-radius: var(--radius);
-    width: 90%;
-    max-width: 420px;
-    box-shadow: var(--shadow);
-}
-
-.note-modal-content label {
-    font-weight: 600;
-    margin-top: 12px;
-    display: block;
-}
-
-.note-modal-content input,
-.note-modal-content textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 6px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-}
-
-.note-modal-content textarea {
-    min-height: 90px;
-}
-
-.modal-actions {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-}
-
-.btn-cancel {
-    background: var(--border);
-    border: none;
-    padding: 10px 16px;
-    border-radius: var(--radius);
-    cursor: pointer;
 }
