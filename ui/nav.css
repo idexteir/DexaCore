@@ -1,95 +1,77 @@
-/* Navigation Bar */
-.nav-bar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+/* -----------------------------------------------------------
+   GLOBAL NAVIGATION BAR
+----------------------------------------------------------- */
 
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(14px);
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 12px 22px;
+#navBar {
+    width: 100%;
+    background: #ffffff;
     border-bottom: 1px solid #e5e7eb;
-}
-
-/* Left section */
-.nav-left {
+    padding: 12px 20px;
     display: flex;
     align-items: center;
-    gap: 18px;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 
+/* Logo */
 .nav-logo {
-    font-weight: 700;
     font-size: 20px;
-    cursor: pointer;
-}
-
-/* Links */
-.nav-links a {
-    margin-right: 16px;
-    color: #333;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.nav-links a.active {
-    color: #2563eb;
     font-weight: 700;
+    color: #111827;
+    text-decoration: none;
 }
 
-/* Right section */
-.nav-right {
+/* Links container */
+.nav-links {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    gap: 16px;
 }
 
-#navUserEmail {
-    color: #555;
-    font-size: 14px;
-}
-
-/* Logout Button */
-.logout-btn {
-    padding: 6px 12px;
-    border: none;
-    background: #ef4444;
-    color: #fff;
+/* Navigation links */
+.nav-links a {
+    padding: 8px 14px;
     border-radius: 6px;
+    text-decoration: none;
+    color: #374151;
+    transition: 0.2s;
+}
+
+.nav-links a:hover {
+    background: #f3f4f6;
+}
+
+/* Login / Logout Button */
+.nav-auth-btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: 600;
     cursor: pointer;
+    border: none;
+    background: #2563eb;
+    color: #fff;
+}
+
+.nav-auth-btn.logout {
+    background: #ef4444;
+}
+
+/* Push content down */
+body {
+    padding-top: 64px !important;
 }
 
 /* Mobile */
-.nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
-}
-
 @media (max-width: 700px) {
-    .nav-links {
-        display: none;
+    #navBar {
         flex-direction: column;
-        background: rgba(255,255,255,0.9);
-        position: absolute;
-        left: 0;
-        top: 60px;
-        width: 100%;
-        padding: 15px 0;
-        border-bottom: 1px solid #ddd;
+        gap: 10px;
+        padding: 14px;
     }
-
-    .nav-links.show {
-        display: flex;
-    }
-
-    .nav-toggle {
-        display: block;
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

@@ -1,58 +1,59 @@
-window.addEventListener("core:ready", () => {
+/* -----------------------------------------------------------
+   NAVIGATION BAR LOGIC
+----------------------------------------------------------- */
 
-    function renderNav() {
-        const nav = document.querySelector("#navbar");
-        if (!nav) return;
+DexaCore.events.on("core:ready", () => {
+    renderNav();
+});
 
-        const user = DexaCore.session.getUser();
+/**
+ * Builds navigation UI depending on login status
+ */
+function renderNav() {
 
-        if (user) {
-            // Logged in navigation
-            nav.innerHTML = `
-                <div class="nav-left">
-                    <a href="#" data-go="home">Home</a>
-                    <a href="#" data-go="dashboard">Dashboard</a>
-                    <a href="#" data-go="properties">Properties</a>
-                    <a href="#" data-go="notes">Notes</a>
-                </div>
+    const isLogged = DexaCore.session.isLoggedIn();
+    const user = DexaCore.session.getUser();
 
-                <div class="nav-right">
-                    <span>${user.email}</span>
-                    <button id="logoutBtn">Logout</button>
-                </div>
-            `;
+    const nav = `
+        <nav id="navBar">
 
-            document.getElementById("logoutBtn").onclick = () => {
-                DexaCore.auth.logout();
-            };
+            <a class="nav-logo" href="#" data-go="home">DexaCore</a>
 
-        } else {
-            // Public navigation
-            nav.innerHTML = `
-                <div class="nav-left">
-                    <a href="#" data-go="home">Home</a>
-                </div>
+            <div class="nav-links">
+                <a data-go="home">Home</a>
+                <a data-go="dashboard">Dashboard</a>
+                <a data-go="properties">Properties</a>
+                <a data-go="notes">Notes</a>
+            </div>
 
-                <div class="nav-right">
-                    <button id="loginBtn">Login</button>
-                </div>
-            `;
+            <div>
+                ${isLogged
+                    ? `<button class="nav-auth-btn logout" id="logoutBtn">Logout</button>`
+                    : `<button class="nav-auth-btn" id="loginBtn">Login</button>`
+                }
+            </div>
 
-            document.getElementById("loginBtn").onclick = () => {
-                DexaCore.router.go("/login");
-            };
-        }
+        </nav>
+    `;
 
-        nav.querySelectorAll("[data-go]").forEach(el => {
-            el.onclick = (e) => {
-                e.preventDefault();
-                DexaCore.router.go(el.dataset.go);
-            };
-        });
-    }
+    document.body.insertAdjacentHTML("afterbegin", nav);
 
-    DexaCore.events.on("page:loaded", () => {
-        renderNav();
+    // Bind link routing
+    document.querySelectorAll("[data-go]").forEach(a => {
+        a.onclick = () => DexaCore.router.go(a.dataset.go);
     });
 
-});
+    // Bind login
+    if (!isLogged) {
+        document.getElementById("loginBtn").onclick = () => {
+            DexaCore.router.go("/login");
+        };
+    }
+
+    // Bind logout
+    if (isLogged) {
+        document.getElementById("logoutBtn").onclick = () => {
+            DexaCore.auth.logout();
+        };
+    }
+}

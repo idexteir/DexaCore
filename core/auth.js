@@ -17,11 +17,32 @@ window.addEventListener("core:ready", () => {
             DexaCore.router.go("/login");
         }
 
+        async loginWithGoogle() {
+            DexaLoading.show("Redirecting...");
+        
+            const { data, error } = await DexaCore.supabase.client.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: window.location.origin + "/DexaCore/"
+                }
+            });
+        
+            if (error) {
+                DexaLoading.hide();
+                return DexaToast.error(error.message);
+            }
+        
+            // User will be redirected back from Google
+        }
+        
+
         // Google login placeholder (will implement later)
         async loginWithGoogle() {
             console.log("[DexaAuth] Google login clicked");
         }
     }
+
+    
 
     DexaCore.auth = new DexaAuth();
 });
