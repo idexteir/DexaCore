@@ -1,48 +1,58 @@
-document.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("core:ready", () => {
 
-    const navContainer = document.createElement("nav");
-    navContainer.classList.add("nav-bar");
-    document.body.prepend(navContainer);
+    function renderNav() {
+        const nav = document.querySelector("#navbar");
+        if (!nav) return;
 
-    async function renderNav() {
+        const user = DexaCore.session.getUser();
 
-        const user = await DexaCore.auth.getUser();
+        if (user) {
+            // Logged in navigation
+            nav.innerHTML = `
+                <div class="nav-left">
+                    <a href="#" data-go="home">Home</a>
+                    <a href="#" data-go="dashboard">Dashboard</a>
+                    <a href="#" data-go="properties">Properties</a>
+                    <a href="#" data-go="notes">Notes</a>
+                </div>
 
-        navContainer.innerHTML = "";
+                <div class="nav-right">
+                    <span>${user.email}</span>
+                    <button id="logoutBtn">Logout</button>
+                </div>
+            `;
 
-        let links = [];
+            document.getElementById("logoutBtn").onclick = () => {
+                DexaCore.auth.logout();
+            };
 
-        if (!user) {
-            links = DexaNavConfig.publicLinks;
         } else {
-            links = [...DexaNavConfig.privateLinks];
+            // Public navigation
+            nav.innerHTML = `
+                <div class="nav-left">
+                    <a href="#" data-go="home">Home</a>
+                </div>
 
-            if (DexaCore.roles.is("admin")) {
-                links = [...links, ...DexaNavConfig.adminLinks];
-            }
+                <div class="nav-right">
+                    <button id="loginBtn">Login</button>
+                </div>
+            `;
+
+            document.getElementById("loginBtn").onclick = () => {
+                DexaCore.router.go("/login");
+            };
         }
 
-        for (const link of links) {
-            const a = document.createElement("a");
-            a.textContent = link.label;
-
-            if (link.page === "logout") {
-                a.onclick = (e) => {
-                    e.preventDefault();
-                    DexaCore.auth.logout();
-                };
-            } else {
-                a.onclick = (e) => {
-                    e.preventDefault();
-                    DexaCore.router.go(link.page);
-                };
-            }
-
-            navContainer.appendChild(a);
-        }
+        nav.querySelectorAll("[data-go]").forEach(el => {
+            el.onclick = (e) => {
+                e.preventDefault();
+                DexaCore.router.go(el.dataset.go);
+            };
+        });
     }
 
-    DexaCore.events.on("core:ready", renderNav);
-    DexaCore.events.on("auth:change", renderNav);
-    DexaCore.events.on("page:loaded", renderNav);
+    DexaCore.events.on("page:loaded", () => {
+        renderNav();
+    });
+
 });
