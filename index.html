@@ -15,11 +15,41 @@
 <body>
     <div id="app"></div>
 
-    <!-- CONFIG -->
-    <script defer src="/DexaCore/config.js"></script>
+    <!-- Core Config -->
+    <script src="config.js" defer></script>
+    <!-- Supabase CDN required before core/supabase.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 
-    <!-- Supabase (must be before core/supabase.js) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Core Framework Order (boot.js last) -->
+    <script src="core/supabase.js" defer></script>
+    <script src="core/session.js" defer></script>
+    <script src="core/events.js" defer></script>
+    <script src="core/roles.js" defer></script>
+    <script src="core/permissions.js" defer></script>
+    <script src="core/storage.js" defer></script>
+    <script src="core/router.js" defer></script>
+    <script src="core/auth.js" defer></script>
+    <script src="core/boot.js" defer></script>
+
+    <!-- UI navigation: config must precede nav.js; all use defer -->
+    <script src="ui/nav.config.js" defer></script>
+    <script src="ui/nav.js" defer></script>
+    <script src="ui/components.css" defer></script>
+    <script src="ui/forms.js" defer></script>
+    <script src="ui/loading.js" defer></script>
+    <script src="ui/modal.js" defer></script>
+    <script src="ui/toast.js" defer></script>
+    <script src="ui/nav.css" defer></script>
+
+    <!-- Feature Modules, all script tags in explicit order, all use defer -->
+    <script src="modules/403/403.js" defer></script>
+    <script src="modules/404/404.js" defer></script>
+    <script src="modules/dashboard/dashboard.js" defer></script>
+    <script src="modules/home/home.js" defer></script>
+    <script src="modules/login/login.js" defer></script>
+    <script src="modules/notes/notes.js" defer></script>
+    <script src="modules/properties/properties.js" defer></script>
+    <script src="modules/register/register.js" defer></script>
 
     <!-- Utils -->
     <script defer src="/DexaCore/utils/dom.js"></script>
@@ -27,37 +57,8 @@
     <script defer src="/DexaCore/utils/helpers.js"></script>
     <script defer src="/DexaCore/utils/validator.js"></script>
 
-    <!-- Core (DexaCore must be created BEFORE nav.js) -->
-    <script defer src="/DexaCore/core/events.js"></script>
-    <script defer src="/DexaCore/core/storage.js"></script>
-    <script defer src="/DexaCore/core/session.js"></script>
-    <script defer src="/DexaCore/core/auth.js"></script>
-    <script defer src="/DexaCore/core/permissions.js"></script>
-    <script defer src="/DexaCore/core/roles.js"></script>
-    <script defer src="/DexaCore/core/supabase.js"></script>
-    <script defer src="/DexaCore/core/router.js"></script>
-    <script defer src="/DexaCore/core/boot.js"></script>
-
-    <!-- Navigation (must load AFTER boot.js) -->
-    <script defer src="/DexaCore/ui/nav.config.js"></script>
-    <script defer src="/DexaCore/ui/nav.js"></script>
-
-    <!-- UI -->
-    <script defer src="/DexaCore/ui/modal.js"></script>
-    <script defer src="/DexaCore/ui/toast.js"></script>
-    <script defer src="/DexaCore/ui/loading.js"></script>
-    <script defer src="/DexaCore/ui/forms.js"></script>
-
     <!-- Data -->
     <script defer src="/DexaCore/data/entities.js"></script>
-
-    <!-- Modules -->
-    <script defer src="/DexaCore/modules/home/home.js"></script>
-    <script defer src="/DexaCore/modules/login/login.js"></script>
-    <script defer src="/DexaCore/modules/dashboard/dashboard.js"></script>
-    <script defer src="/DexaCore/modules/register/register.js"></script>
-    <script defer src="/DexaCore/modules/properties/properties.js"></script>
-    <script defer src="/DexaCore/modules/notes/notes.js"></script>
 
 </body>
 </html>
