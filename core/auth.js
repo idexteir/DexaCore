@@ -1,6 +1,7 @@
-DexaCore?.events?.on("core:ready", () => {
+window.addEventListener("core:ready", () => {
 
     class DexaAuth {
+
         constructor() {
             this.supabase = DexaSupabase;
         }
@@ -14,6 +15,11 @@ DexaCore?.events?.on("core:ready", () => {
             await this.supabase.client.auth.signOut();
             DexaCore.session.clear();
             DexaCore.router.go("/login");
+        }
+
+        // Google login placeholder (will implement later)
+        async loginWithGoogle() {
+            console.log("[DexaAuth] Google login clicked");
         }
     }
 
