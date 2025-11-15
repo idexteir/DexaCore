@@ -6,14 +6,12 @@
     <title>DexaCore</title>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="ui/nav.css">
-    <link rel="stylesheet" href="assets/styles.css">
-    <link rel="stylesheet" href="ui/components.css">
+    <link rel="stylesheet" href="/DexaCore/ui/nav.css">
+    <link rel="stylesheet" href="/DexaCore/assets/styles.css">
+    <link rel="stylesheet" href="/DexaCore/ui/components.css">
 
     <!-- Theme -->
-    <link rel="stylesheet" href="assets/theme.css">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src *;">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="/DexaCore/assets/theme.css">
 </head>
 
 <body>
@@ -21,47 +19,50 @@
     <div id="app"></div>
 
     <!-- Config -->
-    <script src="config.js"></script>
-    <!-- Supabase CDN - must come BEFORE core/supabase.js -->
+    <script src="/DexaCore/config.js"></script>
+
+    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Utils -->
-    <script src="utils/dom.js"></script>
-    <script src="utils/debug.js"></script>
-    <script src="utils/helpers.js"></script>
-    <script src="utils/validator.js"></script>
+    <script src="/DexaCore/utils/dom.js"></script>
+    <script src="/DexaCore/utils/debug.js"></script>
+    <script src="/DexaCore/utils/helpers.js"></script>
+    <script src="/DexaCore/utils/validator.js"></script>
 
     <!-- Supabase -->
-    <script src="core/supabase.js"></script>
+    <script src="/DexaCore/core/supabase.js"></script>
 
     <!-- Core -->
-    <script src="core/events.js"></script>
-    <script src="core/storage.js"></script>
-    <script src="core/session.js"></script>
-    <script src="core/router.js"></script>
-    <script src="core/auth.js"></script>
-    <script src="core/permissions.js"></script>
-    <script src="core/roles.js"></script>
-    <script src="core/boot.js"></script>
+    <script src="/DexaCore/core/events.js"></script>
+    <script src="/DexaCore/core/storage.js"></script>
+    <script src="/DexaCore/core/session.js"></script>
+    <script src="/DexaCore/core/router.js"></script>
+    <script src="/DexaCore/core/auth.js"></script>
+    <script src="/DexaCore/core/permissions.js"></script>
+    <script src="/DexaCore/core/roles.js"></script>
+
+    <!-- Boot MUST be before UI and Modules for GitHub Pages -->
+    <script src="/DexaCore/core/boot.js"></script>
 
     <!-- UI -->
-    <script src="ui/modal.js"></script>
-    <script src="ui/toast.js"></script>
-    <script src="ui/loading.js"></script>
-    <script src="ui/forms.js"></script>
-    <script src="ui/nav.js"></script>
+    <script src="/DexaCore/ui/modal.js"></script>
+    <script src="/DexaCore/ui/toast.js"></script>
+    <script src="/DexaCore/ui/loading.js"></script>
+    <script src="/DexaCore/ui/forms.js"></script>
+    <script src="/DexaCore/ui/nav.js"></script>
 
     <!-- Data -->
-    <script src="data/entities.js"></script>
+    <script src="/DexaCore/data/entities.js"></script>
 
     <!-- Modules -->
-    <script src="modules/example/example.js"></script>
-    <script src="modules/dashboard/dashboard.js"></script>
-    <script src="modules/login/login.js"></script>
-    <script src="modules/register/register.js"></script>
-    <script src="modules/properties/properties.js"></script>
-    <script src="modules/notes/notes.js"></script>
-    <script src="modules/notes/note.js"></script>
+    <script src="/DexaCore/modules/example/example.js"></script>
+    <script src="/DexaCore/modules/dashboard/dashboard.js"></script>
+    <script src="/DexaCore/modules/login/login.js"></script>
+    <script src="/DexaCore/modules/register/register.js"></script>
+    <script src="/DexaCore/modules/properties/properties.js"></script>
+    <script src="/DexaCore/modules/notes/notes.js"></script>
+    <script src="/DexaCore/modules/notes/note.js"></script>
 
 </body>
 </html>
