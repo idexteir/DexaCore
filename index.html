@@ -18,11 +18,8 @@
     <!-- CONFIG -->
     <script defer src="/DexaCore/config.js"></script>
 
-    <!-- Supabase -->
+    <!-- Supabase (must be before core/supabase.js) -->
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Navigation config -->
-    <script defer src="/DexaCore/ui/nav.config.js"></script>
 
     <!-- Utils -->
     <script defer src="/DexaCore/utils/dom.js"></script>
@@ -30,7 +27,7 @@
     <script defer src="/DexaCore/utils/helpers.js"></script>
     <script defer src="/DexaCore/utils/validator.js"></script>
 
-    <!-- Core -->
+    <!-- Core (DexaCore must be created BEFORE nav.js) -->
     <script defer src="/DexaCore/core/events.js"></script>
     <script defer src="/DexaCore/core/storage.js"></script>
     <script defer src="/DexaCore/core/session.js"></script>
@@ -41,12 +38,15 @@
     <script defer src="/DexaCore/core/router.js"></script>
     <script defer src="/DexaCore/core/boot.js"></script>
 
+    <!-- Navigation (must load AFTER boot.js) -->
+    <script defer src="/DexaCore/ui/nav.config.js"></script>
+    <script defer src="/DexaCore/ui/nav.js"></script>
+
     <!-- UI -->
     <script defer src="/DexaCore/ui/modal.js"></script>
     <script defer src="/DexaCore/ui/toast.js"></script>
     <script defer src="/DexaCore/ui/loading.js"></script>
     <script defer src="/DexaCore/ui/forms.js"></script>
-    <script defer src="/DexaCore/ui/nav.js"></script>
 
     <!-- Data -->
     <script defer src="/DexaCore/data/entities.js"></script>
@@ -58,5 +58,6 @@
     <script defer src="/DexaCore/modules/register/register.js"></script>
     <script defer src="/DexaCore/modules/properties/properties.js"></script>
     <script defer src="/DexaCore/modules/notes/notes.js"></script>
+
 </body>
 </html>
