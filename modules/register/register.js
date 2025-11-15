@@ -1,3 +1,11 @@
+(function waitForDexaCoreRegister(cb) {
+  if (window.DexaCore && DexaCore.events) {
+    cb();
+  } else {
+    setTimeout(() => waitForDexaCoreRegister(cb), 30);
+  }
+})(function() {
+// original register.js code starts here
 DexaCore.events.on("core:ready", () => {
 class RegisterPage {
     static init() {
@@ -20,4 +28,6 @@ class RegisterPage {
 DexaCore.events.on("page:loaded", (path) => {
     if (path === "/register") RegisterPage.init();
 });
+});
+// original register.js code ends here
 });

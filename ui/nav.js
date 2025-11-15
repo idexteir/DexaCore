@@ -1,4 +1,12 @@
 // ui/nav.js
+(function waitForDexaCoreNav(cb) {
+  if (window.DexaCore && DexaCore.events) {
+    cb();
+  } else {
+    setTimeout(() => waitForDexaCoreNav(cb), 30);
+  }
+})(function() {
+// original nav.js code starts here
 DexaCore.events.on("core:ready", () => {
 
     function buildNavLinks() {
@@ -43,4 +51,6 @@ DexaCore.events.on("core:ready", () => {
     }
 
     DexaCore.events.on("page:loaded", renderNav);
+});
+// original nav.js code ends here
 });
