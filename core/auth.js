@@ -78,6 +78,37 @@ window.DexaAuth = {
             console.error("[Auth] Reset password error:", err);
             return { success: false, error: err.message };
         }
+    },
+
+    async handleOAuthCallback() {
+        const { data, error } = await DexaCore.supabase.client.auth.getSession();
+        
+        if (error) throw error;
+        if (!data.session) throw new Error("No session found");
+    
+        const user = data.session.user;
+        
+        // Extract role from metadata (check all possible locations)
+        const role = user.app_metadata?.role || 
+                     user.user_metadata?.role || 
+                     "user";
+    
+        const userData = {
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.name || 
+                  user.user_metadata?.full_name || 
+                  user.email,
+            role: role,  // ← ADD THIS
+            avatar: user.user_metadata?.avatar_url || 
+                    user.user_metadata?.picture,
+            token: data.session.access_token
+        };
+    
+        console.log("[Auth] User data with role:", userData);
+        
+        DexaCore.session.setUser(userData);
+        return userData;
     }
 };
 

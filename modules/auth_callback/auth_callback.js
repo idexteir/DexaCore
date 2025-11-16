@@ -6,63 +6,47 @@ async function processCallback() {
         return;
     }
 
-    console.log("[Auth Callback] Processing OAuth callback...");
-
-    // Wait for DexaCore
-    let attempts = 0;
-    const maxAttempts = 100;
-    
-    while (!window.DexaCore?.router && attempts < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        attempts++;
-    }
-
-    if (!window.DexaCore?.router) {
-        console.error("[Auth Callback] DexaCore not ready after 10 seconds");
-        document.querySelector("#app").innerHTML = `
-            <div style="text-align: center; padding: 60px 20px;">
-                <h1>Authentication Error</h1>
-                <p>System initialization failed</p>
-                <a href="/" class="btn-primary">Go Home</a>
-            </div>
-        `;
-        return;
-    }
-
     try {
-        const { data: { session }, error } = await DexaCore.supabase.client.auth.getSession();
+        console.log("[Auth Callback] Processing OAuth callback...");
+        
+        const { data, error } = await DexaCore.supabase.client.auth.getSession();
+        
+        if (error) throw error;
+        if (!data.session) throw new Error("No session found");
 
-        if (error) {
-            console.error("[Auth Callback] Session error:", error);
-            if (window.DexaToast) DexaToast.error("Authentication failed");
-            DexaCore.router.go("/login");
-            return;
-        }
-
-        if (!session) {
-            console.warn("[Auth Callback] No session found");
-            DexaCore.router.go("/login");
-            return;
-        }
-
-        console.log("[Auth Callback] Session found:", session.user.email);
+        const user = data.session.user;
+        
+        // Extract role from ALL possible locations
+        const role = user.app_metadata?.role || 
+                     user.user_metadata?.role || 
+                     user.raw_app_meta_data?.role ||
+                     user.raw_user_meta_data?.role ||
+                     "user";
 
         const userData = {
-            id: session.user.id,
-            email: session.user.email,
-            name: session.user.user_metadata?.full_name || session.user.email,
-            role: "user",
-            token: session.access_token
+            id: user.id,
+            email: user.email,
+            name: user.user_metadata?.name || 
+                  user.user_metadata?.full_name || 
+                  user.email,
+            role: role,  // ← IMPORTANT
+            avatar: user.user_metadata?.avatar_url || 
+                    user.user_metadata?.picture,
+            token: data.session.access_token
         };
 
-        DexaCore.session.setUser(userData);
-        console.log("[Auth Callback] User authenticated:", userData.email);
+        console.log("[Auth Callback] User data with role:", userData);
         
-        DexaCore.router.go(window.DexaCoreConfig?.auth?.redirectIfLoggedIn || "/dashboard");
-
+        DexaCore.session.setUser(userData);
+        
+        console.log("[Auth Callback] Session set, redirecting...");
+        DexaCore.router.go("/");
+        
     } catch (err) {
         console.error("[Auth Callback] Fatal error:", err);
-        if (window.DexaToast) DexaToast.error("Authentication failed");
+        if (window.DexaToast) {
+            DexaToast.error("Login failed: " + err.message);
+        }
         DexaCore.router.go("/login");
     }
 }

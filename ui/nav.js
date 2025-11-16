@@ -104,127 +104,129 @@ DexaCore.events.on("core:ready", async () => {
         }
     };
 
+    // Add mobile toggle functionality
+    const navToggle = document.getElementById("nav-toggle");
+    const navCenter = document.querySelector(".nav-center");
+
+    if (navToggle && navCenter) {
+        navToggle.addEventListener("click", () => {
+            navCenter.classList.toggle("show");
+        });
+    }
+
     /* RENDER MENU */
     function renderMenu() {
         console.log("[Nav] Rendering menu...");
+        
+        const user = DexaCore.session?.getUser();
+        const isLoggedIn = DexaCore.session?.isLoggedIn() || false;
+        
+        console.log("[Nav] User:", user, "Logged:", isLoggedIn);
+
+        // Safety check
         if (!linksEl || !rightEl) {
-            console.warn("[Nav] Nav elements not found:", { linksEl, rightEl });
+            console.error("[Nav] Nav elements not found");
             return;
         }
 
-        const user = DexaCore.session.getUser();
-        const logged = DexaCore.session.isLoggedIn();
-        const currentPath = location.pathname.replace(/^\//, "") || "home";
-
-        console.log("[Nav] User:", user, "Logged:", logged);
-
+        // Clear existing content
         linksEl.innerHTML = "";
+        rightEl.innerHTML = "";
 
-        // Show public links when not logged in, private links when logged in
-        const menuItems = [];
+        // Build navigation links
+        const links = [];
         
-        if (logged) {
-            // User is logged in - show private links
-            if (cfg.private) {
-                cfg.private.forEach(item => {
-                    // Handle logout action
-                    if (item.action === "logout") {
-                        const a = document.createElement("a");
-                        a.textContent = item.label;
-                        a.href = "javascript:void(0)";
-                        a.onclick = () => DexaAuth.logout();
-                        linksEl.appendChild(a);
-                        return;
-                    }
-                    
-                    menuItems.push(item);
-                });
-            }
+        links.push({ label: "Dashboard", href: "/dashboard", icon: "📊" });
+        
+        if (isLoggedIn) {
+            links.push({ label: "Properties", href: "/properties", icon: "🏢" });
             
-            // Also add admin-specific items if user is admin
-            if (user.role === "admin" && cfg.admin) {
-                cfg.admin.forEach(item => {
-                    if (!menuItems.find(mi => mi.path === item.path)) {
-                        menuItems.push(item);
-                    }
-                });
-            }
-        } else {
-            // User is not logged in - show public links
-            if (cfg.public) {
-                cfg.public.forEach(item => {
-                    menuItems.push(item);
-                });
+            // Admin link with null check
+            if (user && user.role === "admin") {
+                links.push({ label: "Admin", href: "/admin", icon: "⚙️" });
             }
         }
 
-        // Render menu items
-        menuItems.forEach(item => {
-            if (item.action === "logout") return; // Already handled above
-            
+        // Render navigation links
+        links.forEach(link => {
             const a = document.createElement("a");
-            a.textContent = item.label || item.name || "Link";
-            a.href = "javascript:void(0)";
-            a.classList.toggle("active", currentPath === item.path);
-            a.onclick = () => DexaCore.router.go(item.path);
+            a.href = link.href;
+            a.className = "nav-link";
+            a.textContent = `${link.icon || ""} ${link.label}`;
+            a.onclick = (e) => {
+                e.preventDefault();
+                DexaCore.router.go(link.href);
+            };
             linksEl.appendChild(a);
         });
 
-        // Right side: Login button or user menu
-        rightEl.innerHTML = "";
-
-        if (!logged) {
-            // Show Login button
-            const btn = document.createElement("button");
-            btn.textContent = "Login";
-            btn.className = "btn-login";
-            btn.onclick = () => DexaCore.router.go("login");
-            rightEl.appendChild(btn);
-        } else {
-            // Show user avatar/menu
+        // Right side - user menu or login button
+        if (isLoggedIn && user) {
+            // User is logged in - show user menu
             const userMenu = document.createElement("div");
-            userMenu.className = "user-menu";
+            userMenu.className = "nav-user-menu";
             
-            const userBtn = document.createElement("button");
-            userBtn.className = "user-btn";
-            
+            // STEP 1: ADD AVATAR OR INITIAL FIRST
             if (user.avatar) {
-                const img = document.createElement("img");
-                img.src = user.avatar;
-                img.alt = user.name || user.email;
-                img.className = "user-avatar-img";
-                userBtn.appendChild(img);
+                const avatar = document.createElement("img");
+                avatar.src = user.avatar;
+                avatar.alt = user.name;
+                avatar.className = "nav-avatar";
+                avatar.onerror = function() {
+                    // If image fails, replace with initial
+                    this.style.display = "none";
+                    const initial = document.createElement("div");
+                    initial.className = "nav-avatar-initial";
+                    initial.textContent = (user.name || user.email).charAt(0).toUpperCase();
+                    userMenu.insertBefore(initial, this.nextSibling);
+                };
+                userMenu.appendChild(avatar); // Avatar FIRST
             } else {
-                userBtn.textContent = (user.name || user.email || "U")[0].toUpperCase();
-                userBtn.className = "user-btn user-avatar-text";
+                // Show first letter of name
+                const initial = document.createElement("div");
+                initial.className = "nav-avatar-initial";
+                initial.textContent = (user.name || user.email).charAt(0).toUpperCase();
+                userMenu.appendChild(initial); // Initial FIRST
             }
             
-            const dropdown = document.createElement("div");
-            dropdown.className = "user-dropdown";
-            dropdown.innerHTML = `
-                <div class="dropdown-item dropdown-header">
-                    <span>${user.name || user.email}</span>
-                </div>
-                <div class="dropdown-divider"></div>
-                <div class="dropdown-item dropdown-action" onclick="DexaAuth.logout()">
-                    <span>Logout</span>
-                </div>
-            `;
+            // STEP 2: ADD USERNAME SECOND
+            const userName = document.createElement("span");
+            userName.className = "nav-username";
+            userName.textContent = user.name || user.email;
+            userMenu.appendChild(userName); // Username SECOND
             
-            userMenu.appendChild(userBtn);
-            userMenu.appendChild(dropdown);
-            
-            userBtn.onclick = (e) => {
-                e.stopPropagation();
-                dropdown.classList.toggle("show");
+            // STEP 3: ADD LOGOUT BUTTON THIRD
+            const logoutBtn = document.createElement("button");
+            logoutBtn.textContent = "Logout";
+            logoutBtn.onclick = async () => {
+                try {
+                    await DexaCore.supabase.client.auth.signOut();
+                    localStorage.clear();
+                    DexaCore.router.go("/login");
+                } catch (err) {
+                    console.error("[Nav] Logout error:", err);
+                    localStorage.clear();
+                    location.href = "/login";
+                }
             };
-            
-            document.addEventListener("click", () => {
-                dropdown.classList.remove("show");
-            });
+            userMenu.appendChild(logoutBtn); // Logout THIRD
             
             rightEl.appendChild(userMenu);
+            
+        } else {
+            // User not logged in - show login button
+            const loginBtn = document.createElement("a");
+            loginBtn.href = "/login";
+            loginBtn.className = "btn-primary";
+            loginBtn.textContent = "Login";
+            loginBtn.onclick = (e) => {
+                e.preventDefault();
+                DexaCore.router.go("/login");
+            };
+            rightEl.appendChild(loginBtn);
         }
+        
+        console.log("[Nav] Menu rendered successfully");
     }
 
     /* SETUP EVENT LISTENERS FIRST (BEFORE INITIAL RENDER) */
