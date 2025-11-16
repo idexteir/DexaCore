@@ -1,23 +1,51 @@
-<section class="hero">
-    <h1>Welcome to DexaCore</h1>
-    <p>Your modular foundation for all future web apps.</p>
-</section>
+<link rel="stylesheet" href="/modules/home/home.css">
 
-<section class="why">
-    <h2>Why DexaCore?</h2>
+<div class="home-container">
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <div class="hero-content">
+            <h1>Welcome to DexaCore</h1>
+            <p>Discover amazing properties and manage your real estate portfolio</p>
+        </div>
+    </section>
 
-    <div class="why-box">
-        <h3>Modular</h3>
-        <p>Build apps faster using prebuilt modules for auth, UI, routing, and data.</p>
-    </div>
+    <!-- Properties Showcase -->
+    <section class="properties-section">
+        <div class="section-header">
+            <h2>Featured Properties</h2>
+            <button class="btn-view-all" onclick="DexaCore.router.go('/properties')">
+                View All →
+            </button>
+        </div>
+        
+        <div id="properties-grid" class="properties-grid">
+            <div class="loading-spinner">Loading properties...</div>
+        </div>
+    </section>
 
-    <div class="why-box">
-        <h3>Scalable</h3>
-        <p>Designed for multi-app architecture like Retriva & future business apps.</p>
-    </div>
+    <!-- Why DexaCore Section -->
+    <section class="features-section">
+        <h2>Why Choose DexaCore?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🏢</div>
+                <h3>Property Management</h3>
+                <p>Easily manage resorts, apartments, and real estate listings</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Analytics Dashboard</h3>
+                <p>Track performance and insights with powerful analytics</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure & Reliable</h3>
+                <p>Built with security and data protection in mind</p>
+            </div>
+        </div>
+    </section>
+</div>
 
-    <div class="why-box">
-        <h3>Portable</h3>
-        <p>Move between Supabase, Cloudflare, Firebase, or custom backend without rewriting.</p>
-    </div>
-</section>
+<script type="module" src="/modules/home/home.js"></script>
