@@ -1,65 +1,52 @@
-// Prevent running before DexaCore loads
-document.addEventListener("DOMContentLoaded", () => {
+DexaCore.events.on("core:ready", () => {
 
-    const waitForDexaCore = setInterval(() => {
-        if (window.DexaCore && DexaCore.events && window.DexaNavConfig) {
-            clearInterval(waitForDexaCore);
-            initNavigation();
-        }
-    }, 50);
+    const brandEl = document.getElementById("nav-brand");
+    const linksEl = document.getElementById("nav-links");
+    const rightEl = document.getElementById("nav-right");
 
-});
+    const cfg = window.DexaNavConfig;
 
-function initNavigation() {
+    /* BRAND CLICK: RETURN HOME */
+    brandEl.onclick = () => DexaCore.router.go("home");
 
-    // Render navigation after ANY page load
-    DexaCore.events.on("page:loaded", () => {
-        renderNav();
-    });
+    /* RENDER MENU */
+    function renderMenu() {
+        const user = DexaCore.session.getUser();
+        const logged = !!user;
 
-    renderNav();
-}
+        linksEl.innerHTML = "";
 
-async function renderNav() {
-    const navArea = document.querySelector("body");
+        const list = logged ? [...cfg.public, ...cfg.private] : cfg.public;
 
-    // Load nav HTML once
-    if (!document.querySelector(".dexa-nav")) {
-        const html = await fetch("/ui/nav.html").then(r => r.text());
-        navArea.insertAdjacentHTML("afterbegin", html);
-    }
-
-    const brand = document.getElementById("nav-brand");
-    const links = document.getElementById("nav-links");
-    const right = document.getElementById("nav-right");
-
-    brand.textContent = DexaNavConfig.brand;
-
-    const user = DexaCore.session.getUser();
-
-    // Render links
-    links.innerHTML = "";
-
-    DexaNavConfig.items.forEach(item => {
-        if (item.public || (item.auth && user)) {
+        list.forEach(item => {
             const a = document.createElement("a");
-            a.textContent = item.label;
-            a.href = item.path;
-            a.onclick = (e) => {
-                e.preventDefault();
-                DexaCore.router.go(item.path);
-            };
-            links.appendChild(a);
+            a.textContent = item.name;
+            a.href = "javascript:void(0)";
+            a.onclick = () => DexaCore.router.go(item.path);
+            linksEl.appendChild(a);
+        });
+
+        rightEl.innerHTML = "";
+
+        if (!logged && cfg.auth.login) {
+            const btn = document.createElement("button");
+            btn.textContent = "Login";
+            btn.className = "btn-login";
+            btn.onclick = () => DexaCore.router.go("login");
+            rightEl.appendChild(btn);
         }
-    });
 
-    // Right side (login/logout)
-    right.innerHTML = "";
-
-    if (user) {
-        const logout = document.createElement("button");
-        logout.textContent = "Logout";
-        logout.onclick = () => DexaCore.auth.logout();
-        right.appendChild(logout);
+        if (logged && cfg.auth.logout) {
+            const btn = document.createElement("button");
+            btn.textContent = "Logout";
+            btn.className = "btn-logout";
+            btn.onclick = () => DexaCore.auth.logout();
+            rightEl.appendChild(btn);
+        }
     }
-}
+
+    /* UPDATE NAV WHEN PAGES CHANGE */
+    DexaCore.events.on("page:loaded", renderMenu);
+
+    renderMenu();
+});

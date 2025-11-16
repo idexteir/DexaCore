@@ -1,35 +1,92 @@
 .dexa-nav {
     width: 100%;
-    height: 60px;
     background: #fff;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    position: fixed;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 0;
+    position: sticky;
     top: 0;
-    left: 0;
-    z-index: 999;
+    z-index: 1000;
 }
 
-.nav-brand {
+.nav-container {
+    max-width: 1300px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.nav-left .nav-brand {
     font-size: 20px;
-    font-weight: 600;
-}
-
-.nav-links a {
-    margin: 0 10px;
-    text-decoration: none;
-    font-weight: 500;
+    font-weight: 700;
+    cursor: pointer;
     color: #222;
 }
 
-.nav-right button {
-    padding: 8px 14px;
+.nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-size: 15px;
+    color: #333;
+    padding: 6px 12px;
     border-radius: 6px;
-    background: #246BFD;
-    color: white;
+}
+
+.nav-links a:hover {
+    background: #f5f5f5;
+}
+
+/* RIGHT SIDE */
+.nav-right {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-right button {
+    padding: 6px 12px;
+    border-radius: 6px;
     border: none;
     cursor: pointer;
+    font-size: 14px;
+}
+
+.nav-right .btn-login {
+    background: #246BFD;
+    color: #fff;
+}
+
+.nav-right .btn-logout {
+    background: #f44336;
+    color: #fff;
+}
+
+/* MOBILE */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .nav-center,
+    .nav-right {
+        display: none;
+    }
+
+    .nav-toggle {
+        display: block;
+    }
 }

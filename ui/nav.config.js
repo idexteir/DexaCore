@@ -1,9 +1,18 @@
 window.DexaNavConfig = {
     brand: "DexaCore",
-    items: [
-        { label: "Home", path: "/home", public: true },
-        { label: "Dashboard", path: "/dashboard", auth: true },
-        { label: "Properties", path: "/properties", auth: true },
-        { label: "Notes", path: "/notes", auth: true }
-    ]
+
+    public: [
+        { name: "Home", path: "home" },
+        { name: "Dashboard", path: "dashboard" }
+    ],
+
+    private: [
+        { name: "Properties", path: "properties" },
+        { name: "Notes", path: "notes" }
+    ],
+
+    auth: {
+        login: true,
+        logout: true
+    }
 };
