@@ -7,84 +7,100 @@ window.Crud = {
 
     async init(entityName) {
         this.currentEntity = entityName;
-        const entity = Entities.registry[entityName];
-        if (!entity) {
-            console.error(`[Crud] Entity ${entityName} not found`);
-            return;
-        }
-
-        // Ensure table exists
         await Entities.ensureTable(entityName);
+        
+        this.setupEventListeners();
+        this.setupForm(Entities.registry[entityName]);
+        this.setupTable(Entities.registry[entityName]);
+        
+        // Ensure modal starts hidden
+        const modal = document.getElementById("crud-modal");
+        if (modal) {
+            modal.classList.add("hidden");
+        }
+        
+        await this.loadData();
+    },
 
-        // Set title
-        const titleEl = document.getElementById("crud-title");
-        if (titleEl) titleEl.textContent = entity.title || entityName;
-
-        // Setup form
-        this.setupForm(entity);
-
-        // Setup table
-        this.setupTable(entity);
-
-        // Setup search
-        this.setupSearch();
-
-        // Setup add button
+    setupEventListeners() {
+        // Add button
         const addBtn = document.getElementById("crud-add-btn");
         if (addBtn) {
             addBtn.onclick = () => this.openForm();
         }
 
-        // Load data
-        await this.loadData();
+        // Close modal button
+        const closeBtn = document.getElementById("crud-modal-close");
+        if (closeBtn) {
+            closeBtn.onclick = () => this.closeForm();
+        }
+
+        // Cancel button
+        const cancelBtn = document.getElementById("crud-cancel-btn");
+        if (cancelBtn) {
+            cancelBtn.onclick = () => this.closeForm();
+        }
+
+        // Search input
+        const searchInput = document.getElementById("crud-search");
+        if (searchInput) {
+            searchInput.oninput = (e) => {
+                this.currentSearch = e.target.value;
+                this.currentPage = 1;
+                this.loadData();
+            };
+        }
     },
 
     setupForm(entity) {
         const form = document.getElementById("crud-form");
-        const fieldsContainer = document.getElementById("crud-form-fields");
-        if (!form || !fieldsContainer) return;
+        
+        if (!form) {
+            console.error("[Crud] Form not found during setup");
+            return;
+        }
 
-        fieldsContainer.innerHTML = "";
-
-        Object.keys(entity.fields).forEach(fieldName => {
-            const field = entity.fields[fieldName];
-            const fieldEl = this.createFormField(fieldName, field);
-            fieldsContainer.appendChild(fieldEl);
-        });
-
+        // Just setup the submit handler, fields will be created when modal opens
         form.onsubmit = async (e) => {
             e.preventDefault();
             await this.save();
         };
         
-        // Populate default values for new forms
-        if (typeof DexaForm.populateDefaults === 'function') {
-            DexaForm.populateDefaults("#crud-form", entity.fields);
-        }
+        console.log("[Crud] Form submit handler attached");
     },
 
     createFormField(name, field) {
+        console.log(`[Crud] Creating field: ${name}`, field);
+        
         const group = document.createElement("div");
         group.className = "form-group";
 
-        let input;
-
-        // DON'T create hidden fields in the form at all
-        // They will be added programmatically in save()
+        // Skip hidden fields - return null instead of comment
         if (field.type === "hidden") {
-            return group; // Return empty group
+            return null;
         }
 
-        // Regular visible fields
+        // Create label
         const label = document.createElement("label");
+        label.htmlFor = `field-${name}`;
         label.textContent = field.label || name;
-        if (field.required) label.innerHTML += " *";
+        if (field.required) {
+            const required = document.createElement("span");
+            required.textContent = " *";
+            required.style.color = "#e53e3e";
+            label.appendChild(required);
+        }
         group.appendChild(label);
 
+        // Create input based on type
+        let input;
+        
         if (field.type === "textarea") {
+            console.log(`[Crud] Creating textarea for ${name}`);
             input = document.createElement("textarea");
             input.rows = field.rows || 4;
         } else if (field.type === "select") {
+            console.log(`[Crud] Creating select for ${name} with options:`, field.options);
             input = document.createElement("select");
             if (field.options) {
                 field.options.forEach(opt => {
@@ -95,6 +111,7 @@ window.Crud = {
                 });
             }
         } else {
+            console.log(`[Crud] Creating input type ${field.type || "text"} for ${name}`);
             input = document.createElement("input");
             input.type = field.type || "text";
             if (field.number) input.type = "number";
@@ -103,12 +120,29 @@ window.Crud = {
 
         input.name = name;
         input.id = `field-${name}`;
+        input.className = "form-control";
         input.placeholder = field.placeholder || field.label || name;
+        
         if (field.required) input.required = true;
-        if (field.min) input.minLength = field.min;
-        if (field.max) input.maxLength = field.max;
+        if (field.min !== undefined) input.min = field.min;
+        if (field.max !== undefined) input.max = field.max;
+        if (field.minLength !== undefined) input.minLength = field.minLength;
+        if (field.maxLength !== undefined) input.maxLength = field.maxLength;
 
         group.appendChild(input);
+
+        // Add help text if provided
+        if (field.help) {
+            const help = document.createElement("small");
+            help.className = "form-help";
+            help.textContent = field.help;
+            help.style.color = "#718096";
+            help.style.fontSize = "0.875rem";
+            help.style.marginTop = "4px";
+            help.style.display = "block";
+            group.appendChild(help);
+        }
+
         return group;
     },
 
@@ -137,17 +171,6 @@ window.Crud = {
 
         thead.innerHTML = "";
         thead.appendChild(row);
-    },
-
-    setupSearch() {
-        const searchInput = document.getElementById("crud-search");
-        if (searchInput) {
-            searchInput.addEventListener("input", (e) => {
-                this.currentSearch = e.target.value;
-                this.currentPage = 1;
-                this.loadData();
-            });
-        }
     },
 
     async loadData() {
@@ -244,35 +267,59 @@ window.Crud = {
     openForm(item = null) {
         const modal = document.getElementById("crud-modal");
         const form = document.getElementById("crud-form");
-        const titleEl = document.getElementById("crud-form-title");
+        const title = document.getElementById("crud-form-title");
+        const fieldsContainer = document.getElementById("crud-form-fields");
         
-        if (!modal || !form) return;
+        if (!modal || !form || !fieldsContainer) {
+            console.error("[Crud] Modal elements not found");
+            return;
+        }
 
-        modal.classList.remove("hidden");
+        const entity = Entities.registry[this.currentEntity];
         form.reset();
-        document.getElementById("crud-form-id").value = "";
+        fieldsContainer.innerHTML = "";
+        
+        Object.keys(entity.fields).forEach(fieldName => {
+            const field = entity.fields[fieldName];
+            if (field.type === "hidden") return;
+            
+            const fieldEl = this.createFormField(fieldName, field);
+            if (fieldEl) fieldsContainer.appendChild(fieldEl);
+        });
+        
+        if (title) {
+            title.textContent = item ? `Edit ${entity.title}` : `Add ${entity.title}`;
+        }
 
         if (item) {
-            titleEl.textContent = "Edit Item";
-            Object.keys(item).forEach(key => {
-                const input = form.querySelector(`[name="${key}"]`);
-                if (input) input.value = item[key];
-            });
-            document.getElementById("crud-form-id").value = item.id;
+            document.getElementById("crud-form-id").value = item.id || "";
+            setTimeout(() => {
+                Object.keys(entity.fields).forEach(fieldName => {
+                    if (entity.fields[fieldName].type === "hidden") return;
+                    const input = document.getElementById(`field-${fieldName}`);
+                    if (input && item[fieldName] !== undefined) {
+                        input.value = item[fieldName];
+                    }
+                });
+            }, 10);
         } else {
-            titleEl.textContent = "Add Item";
-            
-            // Populate default values for NEW forms only
-            const entity = Entities.registry[this.currentEntity];
-            if (entity && typeof DexaForm.populateDefaults === 'function') {
-                DexaForm.populateDefaults("#crud-form", entity.fields);
-            }
+            document.getElementById("crud-form-id").value = "";
         }
+
+        modal.classList.remove("hidden");
     },
 
     closeForm() {
         const modal = document.getElementById("crud-modal");
-        if (modal) modal.classList.add("hidden");
+        const form = document.getElementById("crud-form");
+        
+        if (modal) {
+            modal.classList.add("hidden");
+        }
+        
+        if (form) {
+            form.reset();
+        }
     },
 
     async save() {

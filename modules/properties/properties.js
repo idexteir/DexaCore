@@ -1,53 +1,59 @@
+console.log("[Properties] Initializing...");
+
 (function waitForCore() {
-    if (window.DexaCore && DexaCore.events) {
+    if (window.DexaCore && window.DexaCore.events && window.Entities && window.Crud) {
+        console.log("[Properties] Dependencies ready, initializing...");
         init();
     } else {
+        console.log("[Properties] Waiting for dependencies...");
         setTimeout(waitForCore, 50);
     }
 })();
 
-function init() {
-    console.log("[Properties] Initializing...");
-    
-    DexaCore.events.on("page:loaded", async (page) => {
-        if (page !== "properties") return;
+async function init() {
+    console.log("[Properties] Init function called");
+
+    DexaCore.events.on("page:loaded", async (pageName) => {
+        if (pageName !== "properties") return;
+
+        console.log("[Properties] Page loaded, setting up CRUD...");
 
         try {
-            const crudHtml = await fetch("/ui/crud/crud.page.html").then(r => {
-                if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                return r.text();
-            });
-            const crudFormHtml = await fetch("/ui/crud/crud.form.html").then(r => {
-                if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                return r.text();
-            });
-            
-            const container = document.querySelector("#properties-crud");
+            // Fetch both CRUD templates
+            const [pageHtml, formHtml] = await Promise.all([
+                fetch("/ui/crud/crud.page.html").then(r => r.text()),
+                fetch("/ui/crud/crud.form.html").then(r => r.text())
+            ]);
+
+            // Find container
+            const container = document.getElementById("properties-crud");
             if (!container) {
-                throw new Error("Properties container not found");
+                throw new Error("#properties-crud container not found");
             }
-            
-            container.innerHTML = crudHtml + crudFormHtml;
+
+            // Insert HTML
+            container.innerHTML = pageHtml + formHtml;
+            console.log("[Properties] CRUD HTML inserted");
+
+            // Initialize CRUD
             await Crud.init("Property");
-            
+            console.log("[Properties] CRUD initialized successfully");
+
         } catch (err) {
-            console.error("[Properties] Failed to load CRUD:", err);
-            if (window.DexaToast) DexaToast.error("Failed to load properties interface");
+            console.error("[Properties] Failed to initialize:", err);
             
-            const container = document.querySelector("#properties-crud");
+            const container = document.getElementById("properties-crud");
             if (container) {
                 container.innerHTML = `
-                    <div style="text-align: center; padding: 40px;">
-                        <p style="color: #dc2626; margin-bottom: 20px;">Failed to load properties: ${err.message}</p>
+                    <div style="padding: 40px; text-align: center;">
+                        <h3 style="color: #dc2626; margin-bottom: 20px;">Failed to Load Properties</h3>
+                        <p style="margin-bottom: 20px;">${err.message}</p>
                         <button onclick="location.reload()" class="btn-primary">Reload Page</button>
                     </div>
                 `;
             }
         }
     });
-
-    // DELETE THIS ENTIRE BLOCK (lines 56-90)
-    // The Property entity is already registered in entities.js with user_id field
 }
 
 (function() {
