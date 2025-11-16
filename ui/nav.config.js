@@ -1,22 +1,9 @@
-// ui/nav.config.js
-
 window.DexaNavConfig = {
-
-    public: [
-        { label: "Home", path: "/home" },
-        { label: "Login", path: "/login" }
-    ],
-
-    user: [
-        { label: "Dashboard", path: "/dashboard" },
-        { label: "Properties", path: "/properties" },
-        { label: "Notes", path: "/notes" }
-    ],
-
-    admin: [
-        { label: "Admin Panel", path: "/admin" },
-        { label: "Dashboard", path: "/dashboard" },
-        { label: "Properties", path: "/properties" },
-        { label: "Notes", path: "/notes" }
+    brand: "DexaCore",
+    items: [
+        { label: "Home", path: "/home", public: true },
+        { label: "Dashboard", path: "/dashboard", auth: true },
+        { label: "Properties", path: "/properties", auth: true },
+        { label: "Notes", path: "/notes", auth: true }
     ]
 };

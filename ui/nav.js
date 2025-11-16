@@ -1,56 +1,65 @@
-// ui/nav.js
-(function waitForDexaCoreNav(cb) {
-  if (window.DexaCore && DexaCore.events) {
-    cb();
-  } else {
-    setTimeout(() => waitForDexaCoreNav(cb), 30);
-  }
-})(function() {
-// original nav.js code starts here
-DexaCore.events.on("core:ready", () => {
+// Prevent running before DexaCore loads
+document.addEventListener("DOMContentLoaded", () => {
 
-    function buildNavLinks() {
-        const navItems = [];
-
-        // Always add public links
-        DexaNavConfig.public.forEach(item => navItems.push(item));
-
-        // Add role-based items
-        if (DexaCore.session.isLoggedIn()) {
-            const role = DexaCore.session.getUser().role;
-
-            if (DexaNavConfig[role]) {
-                DexaNavConfig[role].forEach(item => navItems.push(item));
-            }
+    const waitForDexaCore = setInterval(() => {
+        if (window.DexaCore && DexaCore.events && window.DexaNavConfig) {
+            clearInterval(waitForDexaCore);
+            initNavigation();
         }
+    }, 50);
 
-        return navItems;
+});
+
+function initNavigation() {
+
+    // Render navigation after ANY page load
+    DexaCore.events.on("page:loaded", () => {
+        renderNav();
+    });
+
+    renderNav();
+}
+
+async function renderNav() {
+    const navArea = document.querySelector("body");
+
+    // Load nav HTML once
+    if (!document.querySelector(".dexa-nav")) {
+        const html = await fetch("/ui/nav.html").then(r => r.text());
+        navArea.insertAdjacentHTML("afterbegin", html);
     }
 
-    function renderNav() {
-        const nav = document.querySelector("#nav");
-        if (!nav) return;
+    const brand = document.getElementById("nav-brand");
+    const links = document.getElementById("nav-links");
+    const right = document.getElementById("nav-right");
 
-        const items = buildNavLinks();
+    brand.textContent = DexaNavConfig.brand;
 
-        nav.innerHTML = `
-            <div class="nav-container">
-                <a class="nav-logo" onclick="DexaCore.router.go('/home')">DexaCore</a>
-                <div class="nav-links">
-                    ${items.map(i => `
-                        <a onclick="DexaCore.router.go('${i.path}')">${i.label}</a>
-                    `).join("")}
+    const user = DexaCore.session.getUser();
 
-                    ${DexaCore.session.isLoggedIn()
-                        ? `<a onclick="DexaCore.auth.logout()">Logout</a>`
-                        : ""
-                    }
-                </div>
-            </div>
-        `;
+    // Render links
+    links.innerHTML = "";
+
+    DexaNavConfig.items.forEach(item => {
+        if (item.public || (item.auth && user)) {
+            const a = document.createElement("a");
+            a.textContent = item.label;
+            a.href = item.path;
+            a.onclick = (e) => {
+                e.preventDefault();
+                DexaCore.router.go(item.path);
+            };
+            links.appendChild(a);
+        }
+    });
+
+    // Right side (login/logout)
+    right.innerHTML = "";
+
+    if (user) {
+        const logout = document.createElement("button");
+        logout.textContent = "Logout";
+        logout.onclick = () => DexaCore.auth.logout();
+        right.appendChild(logout);
     }
-
-    DexaCore.events.on("page:loaded", renderNav);
-});
-// original nav.js code ends here
-});
+}

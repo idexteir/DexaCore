@@ -13,15 +13,20 @@
 </head>
 
 <body>
+
+    <!-- NAV ROOT (required for Netlify load order) -->
+    <div id="nav-root"></div>
+
+    <!-- APP ROOT -->
     <div id="app"></div>
 
     <!-- CONFIG -->
     <script defer src="config.js"></script>
 
-    <!-- Supabase CDN -->
+    <!-- Supabase -->
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- Navigation Config -->
+    <!-- Navigation config (MUST load before nav.js) -->
     <script defer src="ui/nav.config.js"></script>
 
     <!-- Utils -->
@@ -30,7 +35,7 @@
     <script defer src="utils/helpers.js"></script>
     <script defer src="utils/validator.js"></script>
 
-    <!-- Core -->
+    <!-- Core (boot.js must be before nav.js) -->
     <script defer src="core/events.js"></script>
     <script defer src="core/storage.js"></script>
     <script defer src="core/session.js"></script>
@@ -41,7 +46,7 @@
     <script defer src="core/router.js"></script>
     <script defer src="core/boot.js"></script>
 
-    <!-- UI -->
+    <!-- UI (nav.js must be AFTER boot.js) -->
     <script defer src="ui/modal.js"></script>
     <script defer src="ui/toast.js"></script>
     <script defer src="ui/loading.js"></script>
