@@ -1,6 +1,0 @@
-table_name,table_type
-activity_logs,BASE TABLE
-notes,BASE TABLE
-properties,BASE TABLE
-roles,BASE TABLE
-users,BASE TABLE

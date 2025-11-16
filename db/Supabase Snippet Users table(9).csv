@@ -1,3 +1,0 @@
-trigger_schema,trigger_name,event_manipulation,event_object_table,action_statement
-public,notes_set_updated_at,UPDATE,notes,EXECUTE FUNCTION update_updated_at()
-public,trg_properties_updated,UPDATE,properties,EXECUTE FUNCTION touch_updated_at()

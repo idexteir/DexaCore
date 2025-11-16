@@ -118,6 +118,10 @@
     border-color: #667eea;
 }
 
+.hidden {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
     .crud-header {
         flex-direction: column;

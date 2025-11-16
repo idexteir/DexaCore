@@ -1,8 +1,0 @@
-column_name,data_type,is_nullable
-id,uuid,NO
-user_id,uuid,NO
-user,text,NO
-action,text,NO
-entity,text,NO
-entityId,text,YES
-timestamp,timestamp with time zone,YES
