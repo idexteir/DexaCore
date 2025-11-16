@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="ui/crud/crud.css">
     <link rel="stylesheet" href="ui/toast.css">
     <link rel="stylesheet" href="ui/loading.css">
+    <link rel="stylesheet" href="/modules/property-modal/property-modal.css">
+    <link rel="stylesheet" href="modules/home/home.css">
 </head>
 
 <body>
@@ -38,6 +40,66 @@
     
     <!-- Loading Overlay -->
     <div id="loading-overlay"></div>
+
+    <!-- Property Modal HTML (INLINE) -->
+    <div id="property-modal" class="property-modal hidden">
+        <div class="modal-overlay" onclick="PropertyModal.close()"></div>
+        
+        <div class="modal-container">
+            <button class="modal-close" onclick="PropertyModal.close()" aria-label="Close">✕</button>
+            
+            <div class="modal-content">
+                <div class="modal-gallery">
+                    <div id="modal-gallery-main" class="gallery-main">
+                        <div class="gallery-placeholder">🏠</div>
+                    </div>
+                </div>
+                
+                <div class="modal-details">
+                    <div class="modal-header">
+                        <h2 id="modal-title" class="modal-title">Property Title</h2>
+                        <div id="modal-location" class="modal-location">
+                            <span class="location-icon">📍</span>
+                            <span class="location-text">Location</span>
+                        </div>
+                    </div>
+                    
+                    <div id="modal-info-grid" class="info-grid"></div>
+                    
+                    <div class="pricing-section">
+                        <h3>Rental Pricing</h3>
+                        <div id="modal-pricing" class="pricing-grid"></div>
+                        <p id="modal-min-stay" class="min-stay-note"></p>
+                    </div>
+                    
+                    <div class="description-section">
+                        <h3>Description</h3>
+                        <p id="modal-description" class="description-text"></p>
+                    </div>
+                    
+                    <div id="modal-amenities-section" class="amenities-section hidden">
+                        <h3>Amenities</h3>
+                        <div id="modal-amenities" class="amenities-grid"></div>
+                    </div>
+                    
+                    <div id="modal-map-section" class="map-section hidden">
+                        <h3>Location</h3>
+                        <div id="modal-map" class="map-container"></div>
+                    </div>
+                    
+                    <div class="contact-section">
+                        <h3>Contact Us</h3>
+                        <div id="modal-contact" class="contact-buttons"></div>
+                    </div>
+                    
+                    <div id="modal-admin-actions" class="admin-actions hidden">
+                        <button class="btn-secondary" onclick="PropertyModal.edit()">✏️ Edit Property</button>
+                        <button class="btn-danger" onclick="PropertyModal.delete()">🗑️ Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- CONFIG (must load first) -->
     <script type="module" src="/config.js"></script>
@@ -84,5 +146,8 @@
     <script type="module" src="/modules/admin/admin.js"></script>
     <script src="/modules/auth_callback/auth_callback.js"></script>
 
+    <!-- Property Modal JS -->
+    <script src="/modules/property-modal/property-modal.js"></script>
+    
 </body>
 </html>

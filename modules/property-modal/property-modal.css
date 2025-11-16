@@ -1,0 +1,373 @@
+/* ------------------------------------------------------
+   PROPERTY MODAL
+----------------------------------------------------------*/
+
+.property-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.property-modal.hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+/* Modal Container */
+.modal-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    max-height: 90vh;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: flex;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1a202c;
+}
+
+.modal-close:hover {
+    background: #f7fafc;
+    transform: rotate(90deg);
+}
+
+/* Modal Content */
+.modal-content {
+    display: flex;
+    width: 100%;
+    overflow-y: auto;
+}
+
+/* Gallery Section */
+.modal-gallery {
+    flex: 0 0 45%;
+    background: #f7fafc;
+    position: relative;
+}
+
+.gallery-main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-placeholder {
+    font-size: 6rem;
+    color: white;
+    opacity: 0.8;
+}
+
+/* Details Section */
+.modal-details {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+/* Header */
+.modal-header {
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    color: #1a202c;
+    margin-bottom: 10px;
+}
+
+.modal-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #718096;
+    font-size: 1rem;
+}
+
+.location-icon {
+    font-size: 1.2rem;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: #f7fafc;
+    border-radius: 12px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: #4a5568;
+}
+
+.info-icon {
+    font-size: 1.3rem;
+}
+
+.info-label {
+    font-weight: 600;
+}
+
+/* Pricing Section - Updated for Single Price */
+.pricing-section {
+    margin-bottom: 25px;
+}
+
+.pricing-section h3 {
+    font-size: 1.3rem;
+    color: #1a202c;
+    margin-bottom: 15px;
+}
+
+.pricing-grid {
+    display: block; /* Changed from grid */
+}
+
+.pricing-item.single-price {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.pricing-item.single-price .pricing-value {
+    font-size: 2rem;
+    color: white;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.min-stay-note {
+    font-size: 0.9rem;
+    color: #718096;
+    font-style: italic;
+}
+
+/* Description */
+.description-section {
+    margin-bottom: 25px;
+}
+
+.description-section h3 {
+    font-size: 1.3rem;
+    color: #1a202c;
+    margin-bottom: 12px;
+}
+
+.description-text {
+    color: #4a5568;
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* Amenities */
+.amenities-section {
+    margin-bottom: 25px;
+}
+
+.amenities-section h3 {
+    font-size: 1.3rem;
+    color: #1a202c;
+    margin-bottom: 12px;
+}
+
+.amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.amenity-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.amenity-icon {
+    color: #48bb78;
+    font-size: 1.2rem;
+}
+
+/* Map Section */
+.map-section {
+    margin-bottom: 25px;
+}
+
+.map-section h3 {
+    font-size: 1.3rem;
+    color: #1a202c;
+    margin-bottom: 12px;
+}
+
+.map-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #e2e8f0;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Contact Section */
+.contact-section {
+    margin-bottom: 25px;
+}
+
+.contact-section h3 {
+    font-size: 1.3rem;
+    color: #1a202c;
+    margin-bottom: 15px;
+}
+
+.contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-contact {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-contact:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-contact.whatsapp {
+    border-color: #25D366;
+    color: #25D366;
+}
+
+.btn-contact.whatsapp:hover {
+    background: #25D366;
+    color: white;
+}
+
+/* Admin Actions */
+.admin-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 20px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.admin-actions button {
+    flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-container {
+        flex-direction: column;
+        max-height: 95vh;
+    }
+    
+    .modal-gallery {
+        flex: 0 0 250px;
+    }
+    
+    .modal-details {
+        padding: 20px;
+    }
+    
+    .modal-title {
+        font-size: 1.5rem;
+    }
+    
+    .info-grid,
+    .pricing-grid,
+    .amenities-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .admin-actions {
+        flex-direction: column;
+    }
+}

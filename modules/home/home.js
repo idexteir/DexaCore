@@ -1,25 +1,58 @@
 console.log("[Home] Module loading...");
 
+// Wait for dependencies
+if (!window.Entities) {
+    console.warn("[Home] Waiting for Entities...");
+    await new Promise(resolve => setTimeout(resolve, 100));
+}
+
+console.log("[Home] Dependencies ready");
+
 // Store all properties globally for filtering
 let allActiveProperties = [];
 let currentFilter = 'all';
 
-(function waitForCore() {
-    if (window.DexaCore && window.DexaCore.events && window.Entities) {
-        console.log("[Home] Dependencies ready");
-        init();
-    } else {
-        setTimeout(waitForCore, 50);
-    }
-})();
+// Main render function called by router
+export async function render(container) {
+    console.log("[Home] Rendering home page");
+    
+    container.innerHTML = `
+        <div class="home-page">
+            <header class="home-header">
+                <h1>Welcome to DexaCore Properties</h1>
+                <p>Find your perfect rental property</p>
+            </header>
 
-function init() {
-    DexaCore.events.on("page:loaded", async (page) => { 
-        if (page !== "home") return;
+            <!-- Property Type Filters -->
+            <div class="filter-section">
+                <button class="filter-btn active" data-type="all" onclick="filterByType('all')">
+                    All Properties
+                </button>
+                <button class="filter-btn" data-type="resort" onclick="filterByType('resort')">
+                    🏖️ Resorts
+                </button>
+                <button class="filter-btn" data-type="apartment" onclick="filterByType('apartment')">
+                    🏢 Apartments
+                </button>
+                <button class="filter-btn" data-type="villa" onclick="filterByType('villa')">
+                    🏠 Villas
+                </button>
+                <button class="filter-btn" data-type="house" onclick="filterByType('house')">
+                    🏡 Houses
+                </button>
+            </div>
 
-        console.log("[Home] Page loaded, loading properties...");
-        await loadProperties();
-    });
+            <!-- Properties Grid -->
+            <div id="properties-grid" class="properties-grid">
+                <div class="loading">Loading properties...</div>
+            </div>
+        </div>
+    `;
+    
+    console.log("[Home] HTML rendered, loading properties...");
+    
+    // Load properties immediately
+    await loadProperties();
 }
 
 async function loadProperties() {
@@ -117,8 +150,8 @@ function createPropertyCard(property) {
     return `
         <div class="property-card" onclick="viewProperty('${property.id}')">
             <div class="property-thumbnail">
-                ${property.image_url 
-                    ? `<img src="${property.image_url}" alt="${property.title}">` 
+                ${property.thumbnail_url 
+                    ? `<img src="${property.thumbnail_url}" alt="${property.title}">` 
                     : getPropertyIcon(property.type)
                 }
                 ${property.type ? `<span class="property-type-badge">${property.type}</span>` : ''}
@@ -140,7 +173,7 @@ function createPropertyCard(property) {
                 
                 <div class="property-footer">
                     ${property.price ? `
-                        <div class="property-price">$${formatPrice(property.price)}</div>
+                        <div class="property-price">${escapeHtml(property.price)}</div>
                     ` : '<div class="property-price">Price on request</div>'}
                     
                     <span class="property-status active">Active</span>
@@ -173,9 +206,7 @@ function escapeHtml(text) {
 
 window.viewProperty = function(id) {
     console.log("[Home] View property:", id);
-    // For now, navigate to properties page
-    // Later, create a property detail page: /property/{id}
-    DexaCore.router.go('/properties');
+    PropertyModal.open(id);
 };
 
 console.log("[Home] Module loaded");

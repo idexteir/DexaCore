@@ -489,48 +489,95 @@ Entities.register("Property", {
     useDB: true,
     storageKey: "dexacore_properties",
     fields: {
-        user_id: { 
-            label: "User ID", 
-            type: "hidden", 
-            required: true
-        },
-        title: { 
-            label: "Title", 
-            type: "text", 
-            required: true 
-        },
-        description: { 
-            label: "Description", 
-            type: "textarea", 
-            required: false 
-        },
-        price: { 
-            label: "Price", 
-            type: "number", 
-            required: false 
-        },
+        title: { type: "text", required: true, label: "Property Title" },
+        description: { type: "textarea", required: true, label: "Description" },
         type: { 
-            label: "Type", 
             type: "select", 
-            required: false,
-            options: [
-                { value: "resort", label: "Resort" },
-                { value: "apartment", label: "Apartment" }
-            ]
-        },
-        status: { 
-            label: "Status", 
-            type: "select", 
-            required: false,
-            options: [
-                { value: "active", label: "Active" },
-                { value: "hidden", label: "Hidden" }
-            ]
+            options: ["resort", "apartment", "villa", "house"],
+            required: true,
+            label: "Property Type"
         },
         location: { 
-            label: "Location", 
             type: "text", 
-            required: false 
+            required: true, 
+            label: "Location",
+            placeholder: "e.g., Dammam, Saudi Arabia"
+        },
+        location_map: { 
+            type: "text", 
+            label: "Google Maps URL",
+            placeholder: "Paste Google Maps embed or share link"
+        },
+        
+        // Single Price Field
+        price: { 
+            type: "text", 
+            required: true,
+            label: "Price",
+            placeholder: "e.g., $150/night or 'Call for price'"
+        },
+        
+        // Property Details
+        bedrooms: { 
+            type: "number", 
+            label: "Bedrooms",
+            placeholder: "Number of bedrooms"
+        },
+        bathrooms: { 
+            type: "number", 
+            label: "Bathrooms",
+            placeholder: "Number of bathrooms"
+        },
+        max_guests: { 
+            type: "number", 
+            label: "Maximum Guests",
+            placeholder: "Max capacity"
+        },
+        min_stay: { 
+            type: "number", 
+            label: "Minimum Stay (nights)",
+            placeholder: "e.g., 1",
+            default: 1
+        },
+        
+        // Contact Info (Single Phone)
+        phone: { 
+            type: "text", 
+            required: true,
+            label: "Phone Number",
+            placeholder: "+966-XXX-XXXX"
+        },
+        whatsapp: { 
+            type: "text", 
+            label: "WhatsApp (if different from phone)",
+            placeholder: "+966-XXX-XXXX or leave empty"
+        },
+        email: { 
+            type: "email", 
+            label: "Email (optional)",
+            placeholder: "contact@property.com"
+        },
+        
+        // Images
+        thumbnail_url: { 
+            type: "text", 
+            label: "Thumbnail Image URL"
+        },
+        
+        // Amenities (will be handled as checkboxes in custom form)
+        amenities: { 
+            type: "json", 
+            label: "Amenities",
+            default: []
+        },
+        
+        // Status
+        status: { 
+            type: "select",
+            options: ["active", "hidden"],
+            default: "hidden",
+            required: true,
+            label: "Status"
         }
     }
 });
@@ -542,15 +589,143 @@ Entities.register("Note", {
     useDB: true,
     storageKey: "dexacore_notes",
     fields: {
-        user_id: { 
-            label: "User ID", 
-            type: "hidden", 
-            required: true
-        },
-        title: { label: "Title", type: "text", required: true },
-        content: { label: "Content", type: "textarea", required: true },
-        color: { label: "Color", type: "text", required: false }
+        title: { type: "text", required: true, label: "Note Title" },
+        content: { type: "textarea", required: true, label: "Content" }
     }
 });
 
 console.log("[Entities] All entities registered");
+
+export const ENTITIES = {
+    Property: {
+        table: "properties",
+        fields: {
+            // Basic Info
+            title: { 
+                type: "text", 
+                required: true, 
+                label: "Property Title" 
+            },
+            description: { 
+                type: "textarea", 
+                required: true, 
+                label: "Description" 
+            },
+            type: { 
+                type: "select", 
+                options: ["resort", "apartment", "villa", "house"],
+                required: true,
+                label: "Property Type"
+            },
+            location: { 
+                type: "text", 
+                required: true, 
+                label: "Location",
+                placeholder: "e.g., Dammam, Saudi Arabia"
+            },
+            location_map: { 
+                type: "text", 
+                label: "Google Maps URL",
+                placeholder: "Paste Google Maps embed or share link"
+            },
+            
+            // Single Price Field
+            price: { 
+                type: "text", 
+                required: true,
+                label: "Price",
+                placeholder: "e.g., $150/night or 'Call for price'"
+            },
+            
+            // Property Details
+            bedrooms: { 
+                type: "number", 
+                label: "Bedrooms",
+                placeholder: "Number of bedrooms"
+            },
+            bathrooms: { 
+                type: "number", 
+                label: "Bathrooms",
+                placeholder: "Number of bathrooms"
+            },
+            max_guests: { 
+                type: "number", 
+                label: "Maximum Guests",
+                placeholder: "Max capacity"
+            },
+            min_stay: { 
+                type: "number", 
+                label: "Minimum Stay (nights)",
+                placeholder: "e.g., 1",
+                default: 1
+            },
+            
+            // Contact Info
+            phone: { 
+                type: "text", 
+                required: true,
+                label: "Phone Number",
+                placeholder: "+966-XXX-XXXX"
+            },
+            whatsapp: { 
+                type: "text", 
+                label: "WhatsApp",
+                placeholder: "+966-XXX-XXXX or leave empty"
+            },
+            email: { 
+                type: "email", 
+                label: "Email",
+                placeholder: "contact@property.com"
+            },
+            
+            // Images
+            thumbnail_url: { 
+                type: "text", 
+                label: "Thumbnail Image URL"
+            },
+            
+            // Amenities (stored as JSONB array)
+            amenities: { 
+                type: "json", 
+                label: "Amenities",
+                default: []
+            },
+            
+            // Status
+            status: { 
+                type: "select",
+                options: ["active", "hidden"],
+                default: "hidden",
+                required: true,
+                label: "Status"
+            }
+        }
+    },
+    
+    Note: {
+        table: "notes",
+        fields: {
+            title: { type: "text", required: true, label: "Note Title" },
+            content: { type: "textarea", required: true, label: "Content" }
+        }
+    }
+};
+
+// Predefined Amenities List
+export const PROPERTY_AMENITIES = [
+    { id: "pool", label: "🏊 Swimming Pool", icon: "🏊" },
+    { id: "wifi", label: "📶 WiFi", icon: "📶" },
+    { id: "parking", label: "🚗 Parking", icon: "🚗" },
+    { id: "kitchen", label: "🍳 Kitchen", icon: "🍳" },
+    { id: "ac", label: "❄️ Air Conditioning", icon: "❄️" },
+    { id: "beach", label: "🏖️ Beach Access", icon: "🏖️" },
+    { id: "gym", label: "💪 Gym", icon: "💪" },
+    { id: "hottub", label: "🛁 Hot Tub", icon: "🛁" },
+    { id: "bbq", label: "🔥 BBQ Grill", icon: "🔥" },
+    { id: "laundry", label: "🧺 Laundry", icon: "🧺" },
+    { id: "balcony", label: "🌅 Balcony/Terrace", icon: "🌅" },
+    { id: "tv", label: "📺 TV/Cable", icon: "📺" },
+    { id: "security", label: "🔒 Security", icon: "🔒" },
+    { id: "elevator", label: "🛗 Elevator", icon: "🛗" },
+    { id: "petfriendly", label: "🐕 Pet Friendly", icon: "🐕" }
+];

@@ -1,11 +1,11 @@
 /* ------------------------------------------------------
-   UNIVERSAL CRUD UI
+   CRUD TABLE STYLES
 ----------------------------------------------------------*/
 
 .crud-container {
-    max-width: 1400px;
-    margin: 0 auto;
     padding: 20px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .crud-header {
@@ -15,126 +15,278 @@
     margin-bottom: 30px;
 }
 
-.crud-header h2 {
+.crud-header h1 {
     font-size: 2rem;
     color: #1a202c;
     margin: 0;
 }
 
-.crud-filters {
-    display: flex;
-    gap: 15px;
+.crud-search {
     margin-bottom: 20px;
-    flex-wrap: wrap;
 }
 
+.crud-search input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.crud-search input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Table Container with Horizontal Scroll */
 .crud-table-container {
+    overflow-x: auto;
     background: white;
     border-radius: 12px;
-    overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .crud-table {
     width: 100%;
+    min-width: 1200px; /* Ensure table doesn't squish */
     border-collapse: collapse;
+    background: white;
 }
 
 .crud-table thead {
-    background: #f7fafc;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
 }
 
 .crud-table th {
-    padding: 15px;
+    padding: 16px 12px;
     text-align: left;
     font-weight: 600;
-    color: #1a202c;
-    border-bottom: 2px solid #e2e8f0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-bottom: 3px solid #5568d3;
 }
 
-.crud-table td {
-    padding: 15px;
+.crud-table tbody tr {
     border-bottom: 1px solid #e2e8f0;
-    color: #4a5568;
+    transition: background-color 0.2s;
 }
 
 .crud-table tbody tr:hover {
-    background: #f7fafc;
+    background-color: #f7fafc;
 }
 
-.crud-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.crud-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.crud-actions .btn-small {
-    padding: 6px 12px;
+.crud-table td {
+    padding: 14px 12px;
+    color: #4a5568;
     font-size: 0.9rem;
+    vertical-align: middle;
 }
 
-.crud-pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin-top: 20px;
-    padding: 15px;
-}
-
-.crud-form {
-    margin-top: 20px;
-}
-
-.crud-form .form-group {
-    margin-bottom: 20px;
-}
-
-.crud-form label {
-    display: block;
-    margin-bottom: 8px;
+/* Specific Column Widths for Properties */
+.crud-table th:nth-child(1), /* Title */
+.crud-table td:nth-child(1) {
+    min-width: 150px;
+    max-width: 200px;
     font-weight: 600;
     color: #1a202c;
 }
 
-.crud-form input,
-.crud-form textarea,
-.crud-form select {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e2e8f0;
+.crud-table th:nth-child(2), /* Description */
+.crud-table td:nth-child(2) {
+    min-width: 150px;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.crud-table th:nth-child(3), /* Type */
+.crud-table td:nth-child(3) {
+    min-width: 100px;
+}
+
+.crud-table th:nth-child(4), /* Location */
+.crud-table td:nth-child(4) {
+    min-width: 120px;
+}
+
+.crud-table th:nth-child(5), /* Google Maps */
+.crud-table td:nth-child(5) {
+    min-width: 100px;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.crud-table th:nth-child(6), /* Daily Rate */
+.crud-table th:nth-child(7), /* Weekly Rate */
+.crud-table th:nth-child(8), /* Monthly Rate */
+.crud-table th:nth-child(9), /* Yearly Rate */
+.crud-table td:nth-child(6),
+.crud-table td:nth-child(7),
+.crud-table td:nth-child(8),
+.crud-table td:nth-child(9) {
+    min-width: 100px;
+    text-align: right;
+    font-weight: 600;
+    color: #667eea;
+}
+
+.crud-table th:nth-child(10), /* Bedrooms */
+.crud-table th:nth-child(11), /* Bathrooms */
+.crud-table th:nth-child(12), /* Max Guests */
+.crud-table th:nth-child(13), /* Min Stay */
+.crud-table td:nth-child(10),
+.crud-table td:nth-child(11),
+.crud-table td:nth-child(12),
+.crud-table td:nth-child(13) {
+    min-width: 80px;
+    text-align: center;
+}
+
+.crud-table th:nth-child(14), /* Phone */
+.crud-table th:nth-child(15), /* Email */
+.crud-table td:nth-child(14),
+.crud-table td:nth-child(15) {
+    min-width: 120px;
+}
+
+/* Actions Column (always visible) */
+.crud-table th:last-child,
+.crud-table td:last-child {
+    min-width: 120px;
+    text-align: center;
+    position: sticky;
+    right: 0;
+    background: white;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.crud-table thead th:last-child {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.crud-table tbody tr:hover td:last-child {
+    background: #f7fafc;
+}
+
+/* Action Buttons */
+.crud-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.crud-actions button {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.crud-actions .btn-edit {
+    background: #48bb78;
+    color: white;
+}
+
+.crud-actions .btn-edit:hover {
+    background: #38a169;
+    transform: translateY(-2px);
+}
+
+.crud-actions .btn-delete {
+    background: #f56565;
+    color: white;
+}
+
+.crud-actions .btn-delete:hover {
+    background: #e53e3e;
+    transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #718096;
+}
+
+.empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #4a5568;
+}
+
+.empty-state p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+/* Add New Button */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 24px;
+    border: none;
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-.crud-form input:focus,
-.crud-form textarea:focus,
-.crud-form select:focus {
-    outline: none;
-    border-color: #667eea;
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
 }
 
-.hidden {
-    display: none !important;
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
+.status-badge.active {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.status-badge.hidden {
+    background: #fed7d7;
+    color: #742a2a;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .crud-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
-
-    .crud-table-container {
-        overflow-x: auto;
+    
+    .crud-search input {
+        max-width: 100%;
     }
-
+    
     .crud-table {
-        min-width: 600px;
+        font-size: 0.85rem;
+    }
+    
+    .crud-table th,
+    .crud-table td {
+        padding: 10px 8px;
     }
 }
 
