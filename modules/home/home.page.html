@@ -18,6 +18,19 @@
             </button>
         </div>
         
+        <!-- Type Filter -->
+        <div class="filter-bar">
+            <button class="filter-btn active" data-type="all" onclick="filterByType('all')">
+                All
+            </button>
+            <button class="filter-btn" data-type="resort" onclick="filterByType('resort')">
+                🏖️ Resort
+            </button>
+            <button class="filter-btn" data-type="apartment" onclick="filterByType('apartment')">
+                🏢 Apartment
+            </button>
+        </div>
+        
         <div id="properties-grid" class="properties-grid">
             <div class="loading-spinner">Loading properties...</div>
         </div>

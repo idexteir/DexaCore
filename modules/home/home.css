@@ -115,6 +115,45 @@
     transform: translateY(-2px);
 }
 
+/* Filter Bar */
+.filter-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    color: #4a5568;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+    transform: translateY(-2px);
+}
+
+.filter-btn.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
 /* Properties Grid */
 .properties-grid {
     display: grid;
@@ -333,5 +372,18 @@
 
     .features-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .filter-bar {
+        padding: 15px;
+        gap: 8px;
+    }
+    
+    .filter-btn {
+        flex: 1;
+        min-width: calc(50% - 4px);
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 8px 12px;
     }
 }

@@ -1,5 +1,9 @@
 console.log("[Home] Module loading...");
 
+// Store all properties globally for filtering
+let allActiveProperties = [];
+let currentFilter = 'all';
+
 (function waitForCore() {
     if (window.DexaCore && window.DexaCore.events && window.Entities) {
         console.log("[Home] Dependencies ready");
@@ -35,30 +39,14 @@ async function loadProperties() {
         console.log("[Home] Fetched properties:", allProperties);
 
         // Filter for ACTIVE properties only
-        const activeProperties = allProperties.filter(property => 
+        allActiveProperties = allProperties.filter(property => 
             property.status && property.status.toLowerCase() === 'active'
         );
 
-        console.log("[Home] Active properties:", activeProperties);
+        console.log("[Home] Active properties:", allActiveProperties);
 
-        // Limit to 6 properties for home page
-        const properties = activeProperties.slice(0, 6);
-
-        if (!properties || properties.length === 0) {
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <h3>No Active Properties Available</h3>
-                    <p>Check back soon for new listings!</p>
-                    <button class="btn-primary" onclick="DexaCore.router.go('/properties')">
-                        Browse All Properties
-                    </button>
-                </div>
-            `;
-            return;
-        }
-
-        // Generate property cards
-        grid.innerHTML = properties.map(property => createPropertyCard(property)).join('');
+        // Render with current filter
+        renderProperties();
 
     } catch (err) {
         console.error("[Home] Failed to load properties:", err);
@@ -71,6 +59,59 @@ async function loadProperties() {
         `;
     }
 }
+
+function renderProperties() {
+    const grid = document.getElementById("properties-grid");
+    if (!grid) return;
+
+    // Filter properties based on selected type
+    let filteredProperties = allActiveProperties;
+    
+    if (currentFilter !== 'all') {
+        filteredProperties = allActiveProperties.filter(property => 
+            property.type && property.type.toLowerCase() === currentFilter.toLowerCase()
+        );
+    }
+
+    // Limit to 6 properties for home page
+    const properties = filteredProperties.slice(0, 6);
+
+    console.log(`[Home] Showing ${properties.length} properties (filter: ${currentFilter})`);
+
+    if (!properties || properties.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <h3>No ${currentFilter !== 'all' ? currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1) : ''} Properties Available</h3>
+                <p>Check back soon for new listings!</p>
+                <button class="btn-primary" onclick="filterByType('all')">
+                    Show All Properties
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    // Generate property cards
+    grid.innerHTML = properties.map(property => createPropertyCard(property)).join('');
+}
+
+window.filterByType = function(type) {
+    console.log("[Home] Filter by type:", type);
+    
+    currentFilter = type;
+    
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.dataset.type === type) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Re-render properties
+    renderProperties();
+};
 
 function createPropertyCard(property) {
     return `
