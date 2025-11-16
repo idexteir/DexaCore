@@ -1,18 +1,21 @@
 window.DexaNavConfig = {
     brand: "DexaCore",
-
+    
     public: [
-        { name: "Home", path: "home" },
-        { name: "Dashboard", path: "dashboard" }
+        { path: "home", label: "Home" },
+        { path: "login", label: "Login" }
     ],
-
+    
     private: [
-        { name: "Properties", path: "properties" },
-        { name: "Notes", path: "notes" }
+        { path: "dashboard", label: "Dashboard" },
+        { path: "properties", label: "Properties" }
+        // REMOVED: notes and logout
     ],
-
-    auth: {
-        login: true,
-        logout: true
-    }
+    
+    admin: [
+        { path: "dashboard", label: "Dashboard" },
+        { path: "properties", label: "Properties" },
+        { path: "admin", label: "Admin Panel" }
+        // REMOVED: notes and logout
+    ]
 };

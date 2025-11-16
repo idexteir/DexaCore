@@ -1,24 +1,42 @@
-class DexaStorage {
-    static set(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
-    }
+console.log("[Storage] Loading...");
 
-    static get(key, fallback = null) {
-        const item = localStorage.getItem(key);
-        if (!item) return fallback;
-
+export const DexaStorage = {
+    set(key, value) {
         try {
-            return JSON.parse(item);
-        } catch {
-            return fallback;
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch (err) {
+            console.error("[Storage] Set error:", err);
+        }
+    },
+
+    get(key, defaultValue = null) {
+        try {
+            const value = localStorage.getItem(key);
+            return value ? JSON.parse(value) : defaultValue;
+        } catch (err) {
+            console.error("[Storage] Get error:", err);
+            return defaultValue;
+        }
+    },
+
+    remove(key) {
+        try {
+            localStorage.removeItem(key);
+        } catch (err) {
+            console.error("[Storage] Remove error:", err);
+        }
+    },
+
+    clear() {
+        try {
+            localStorage.clear();
+        } catch (err) {
+            console.error("[Storage] Clear error:", err);
         }
     }
+};
 
-    static remove(key) {
-        localStorage.removeItem(key);
-    }
+console.log("[Storage] Module loaded");
 
-    static clear() {
-        localStorage.clear();
-    }
-}
+// Also attach to window for non-module scripts
+window.DexaStorage = DexaStorage;

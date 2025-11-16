@@ -14,9 +14,9 @@ Thumbs.db
 *.env
 .env.*
 
-# Optional: npm/yarn
+# npm/yarn
 node_modules/
 
-# Optional: build artifacts
+# Build artifacts
 dist/
 build/

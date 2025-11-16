@@ -1,48 +1,84 @@
-window.addEventListener("core:ready", () => {
+console.log("[Auth] Loading...");
 
-    class DexaAuth {
+// Make DexaAuth available globally
+window.DexaAuth = {
+    async login(email, password) {
+        try {
+            const { data, error } = await DexaCore.supabase.client.auth.signInWithPassword({
+                email,
+                password
+            });
 
-        constructor() {
-            this.supabase = DexaSupabase;
+            if (error) throw error;
+
+            const userData = {
+                id: data.user.id,
+                email: data.user.email,
+                name: data.user.user_metadata?.full_name || data.user.email,
+                role: "user",
+                token: data.session.access_token
+            };
+
+            DexaCore.session.setUser(userData);
+            return { success: true, user: userData };
+        } catch (err) {
+            console.error("[Auth] Login error:", err);
+            return { success: false, error: err.message };
         }
+    },
 
-        async getUser() {
-            const { data } = await this.supabase.client.auth.getUser();
-            return data?.user || null;
-        }
-
-        async logout() {
-            await this.supabase.client.auth.signOut();
+    async logout() {
+        try {
+            await DexaCore.supabase.client.auth.signOut();
             DexaCore.session.clear();
-            DexaCore.router.go("/login");
+            if (DexaCore.router) {
+                DexaCore.router.go("/login");
+            }
+        } catch (err) {
+            console.error("[Auth] Logout error:", err);
+            // Force logout even if Supabase fails
+            DexaCore.session.clear();
+            if (DexaCore.router) {
+                DexaCore.router.go("/login");
+            }
         }
+    },
 
-        async loginWithGoogle() {
-            DexaLoading.show("Redirecting...");
-        
-            const { data, error } = await DexaCore.supabase.client.auth.signInWithOAuth({
-                provider: "google",
+    async register(email, password, name) {
+        try {
+            const { data, error } = await DexaCore.supabase.client.auth.signUp({
+                email,
+                password,
                 options: {
-                    redirectTo: window.location.origin + "/DexaCore/"
+                    data: {
+                        full_name: name
+                    }
                 }
             });
-        
-            if (error) {
-                DexaLoading.hide();
-                return DexaToast.error(error.message);
-            }
-        
-            // User will be redirected back from Google
-        }
-        
 
-        // Google login placeholder (will implement later)
-        async loginWithGoogle() {
-            console.log("[DexaAuth] Google login clicked");
+            if (error) throw error;
+
+            return { success: true, user: data.user };
+        } catch (err) {
+            console.error("[Auth] Register error:", err);
+            return { success: false, error: err.message };
+        }
+    },
+
+    async resetPassword(email) {
+        try {
+            const { error } = await DexaCore.supabase.client.auth.resetPasswordForEmail(email, {
+                redirectTo: `${window.location.origin}/reset-password`
+            });
+
+            if (error) throw error;
+
+            return { success: true };
+        } catch (err) {
+            console.error("[Auth] Reset password error:", err);
+            return { success: false, error: err.message };
         }
     }
+};
 
-    
-
-    DexaCore.auth = new DexaAuth();
-});
+console.log("[Auth] Initialized");

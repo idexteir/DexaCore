@@ -1,7 +1,5 @@
-class DexaModal {
-    static show({ title = "", content = "", onConfirm = null, onCancel = null, confirmText = "OK", cancelText = "Cancel" }) {
-
-        // Remove old modal if exists
+window.DexaModal = {
+    show({ title = "", content = "", onConfirm = null, onCancel = null, confirmText = "OK", cancelText = "Cancel" }) {
         const old = document.querySelector(".dexacore-modal-overlay");
         if (old) old.remove();
 
@@ -30,4 +28,4 @@ class DexaModal {
             wrapper.remove();
         };
     }
-}
+};

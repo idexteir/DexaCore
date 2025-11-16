@@ -24,9 +24,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.google-btn img {
+.google-btn:hover {
+    background: #f8f9fa;
+    border-color: #ccc;
+}
+
+.google-btn img,
+.google-btn svg {
     height: 20px;
+    width: 20px;
     margin-right: 8px;
 }

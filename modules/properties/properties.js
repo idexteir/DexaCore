@@ -1,141 +1,125 @@
-/* ---------------------------------------
-    Register Entity
---------------------------------------- */
+(function waitForCore() {
+    if (window.DexaCore && DexaCore.events) {
+        init();
+    } else {
+        setTimeout(waitForCore, 50);
+    }
+})();
 
-window.addEventListener("core:ready", () => {
+function init() {
+    console.log("[Properties] Initializing...");
+    
+    DexaCore.events.on("page:loaded", async (page) => {
+        if (page !== "properties") return;
 
-    Entities.register("Property", {
-        title: "Properties",
-        table: "properties",
-        storageKey: "properties",
-        useDB: true,
-        fields: {
-            title: { required: true, label: "Title" },
-            description: { required: true, label: "Description" },
-            price: { required: true, number: true, label: "Price" },
-            type: { required: true, label: "Type" },
-            status: { required: true, label: "Status" },
-            location: { required: true, label: "Location" }
-        }
-    });
-
-
-    /* ---------------------------------------
-        Page Logic
-    --------------------------------------- */
-
-    class PropertiesPage {
-
-        static init() {
-            PropertiesPage.loadList();
-
-            const form = document.querySelector("#propForm");
-            if (form) {
-                form.onsubmit = async (e) => {
-                    e.preventDefault();
-
-                    const values = DexaForm.getValues("#propForm");
-                    const error = DexaForm.validate(Entities.getFields("Property"), values);
-
-                    if (error) return DexaToast.error(error);
-
-                    await Entities.save("Property", values);
-
-                    DexaToast.success("Saved!");
-                    PropertiesPage.closeForm();
-                    PropertiesPage.loadList();
-                };
+        try {
+            const crudHtml = await fetch("/ui/crud/crud.page.html").then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.text();
+            });
+            const crudFormHtml = await fetch("/ui/crud/crud.form.html").then(r => {
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                return r.text();
+            });
+            
+            const container = document.querySelector("#properties-crud");
+            if (!container) {
+                throw new Error("Properties container not found");
             }
-        }
-
-        static openForm(item = null) {
-            const modal = document.querySelector("#propModal");
-            const title = document.querySelector("#modalTitle");
-            const form = document.querySelector("#propForm");
-
-            modal.classList.remove("hidden");
-            form.reset();
-            form.id.value = "";
-
-            if (item) {
-                title.textContent = "Edit Property";
-                Object.keys(item).forEach(k => form[k].value = item[k]);
-            } else {
-                title.textContent = "Add Property";
-            }
-        }
-
-        static closeForm() {
-            document.querySelector("#propModal").classList.add("hidden");
-        }
-
-        static async loadList() {
-            let list = await Entities.list("Property");
-            const container = document.querySelector("#propList");
-
-            const search = (document.querySelector("#searchInput")?.value || "").toLowerCase();
-            const type = document.querySelector("#typeFilter")?.value || "";
-            const status = document.querySelector("#statusFilter")?.value || "";
-
-            if (search) {
-                list = list.filter(p =>
-                    p.title.toLowerCase().includes(search) ||
-                    p.description.toLowerCase().includes(search)
-                );
-            }
-
-            if (type) list = list.filter(p => p.type === type);
-            if (status) list = list.filter(p => p.status === status);
-
-            container.innerHTML = "";
-
-            if (list.length === 0) {
-                container.innerHTML = "<p class='empty'>No properties found.</p>";
-                return;
-            }
-
-            list.forEach(p => {
-                const row = document.createElement("div");
-                row.className = "prop-row";
-
-                row.innerHTML = `
-                    <div class="prop-info">
-                        <h4>${p.title}</h4>
-                        <p>${p.description}</p>
-                        <span class="badge">${p.type}</span>
-                        <span class="badge status-${p.status.toLowerCase()}">${p.status}</span>
-                        <p class="location">${p.location}</p>
-                        <p class="price">${p.price} SAR</p>
-                    </div>
-
-                    <div class="prop-actions">
-                        <button class="btn-small" onclick='PropertiesPage.openForm(${JSON.stringify(p)})'>Edit</button>
-                        <button class="btn-delete" onclick="PropertiesPage.delete('${p.id}')">Delete</button>
+            
+            container.innerHTML = crudHtml + crudFormHtml;
+            await Crud.init("Property");
+            
+        } catch (err) {
+            console.error("[Properties] Failed to load CRUD:", err);
+            if (window.DexaToast) DexaToast.error("Failed to load properties interface");
+            
+            const container = document.querySelector("#properties-crud");
+            if (container) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <p style="color: #dc2626; margin-bottom: 20px;">Failed to load properties: ${err.message}</p>
+                        <button onclick="location.reload()" class="btn-primary">Reload Page</button>
                     </div>
                 `;
-
-                container.appendChild(row);
-            });
+            }
         }
-
-        static async delete(id) {
-            DexaModal.show({
-                title: "Delete Property?",
-                content: "This action cannot be undone.",
-                confirmText: "Delete",
-                onConfirm: async () => {
-                    await Entities.delete("Property", id);
-                    DexaToast.success("Deleted!");
-                    PropertiesPage.loadList();
-                }
-            });
-        }
-    }
-
-
-    /* Auto-init when /properties loads */
-    DexaCore.events.on("page:loaded", (page) => {
-        if (page === "properties") PropertiesPage.init();
     });
 
-});
+    // DELETE THIS ENTIRE BLOCK (lines 56-90)
+    // The Property entity is already registered in entities.js with user_id field
+}
+
+(function() {
+    console.log("[Properties] Module loading...");
+
+    window.PropertiesModule = {
+        async init() {
+            console.log("[Properties] Initializing...");
+            await this.loadProperties();
+        },
+
+        async loadProperties() {
+            const grid = document.getElementById("properties-grid");
+            if (!grid) return;
+
+            try {
+                const { data, error } = await DexaCore.supabase.client
+                    .from("properties")
+                    .select("*")
+                    .order("created_at", { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <h3>No Properties Yet</h3>
+                            <p>Get started by adding your first property</p>
+                            <button class="btn btn-primary" onclick="PropertiesModule.openCreateModal()">
+                                + Add Property
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                grid.innerHTML = data.map(property => `
+                    <div class="property-card">
+                        <h3>${property.name || "Untitled Property"}</h3>
+                        <p>${property.address || "No address"}</p>
+                        <div class="property-actions">
+                            <button class="btn btn-sm" onclick="PropertiesModule.edit('${property.id}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="PropertiesModule.delete('${property.id}')">Delete</button>
+                        </div>
+                    </div>
+                `).join("");
+
+            } catch (err) {
+                console.error("[Properties] Load error:", err);
+                grid.innerHTML = `<p class="error-message">Failed to load properties: ${err.message}</p>`;
+            }
+        },
+
+        openCreateModal() {
+            DexaToast.info("Property creation coming soon!");
+        },
+
+        edit(id) {
+            DexaToast.info("Edit functionality coming soon!");
+        },
+
+        delete(id) {
+            DexaToast.info("Delete functionality coming soon!");
+        }
+    };
+
+    // Auto-initialize when page loads
+    if (DexaCore && DexaCore.events) {
+        DexaCore.events.on("page:loaded", (page) => {
+            if (page === "properties") {
+                PropertiesModule.init();
+            }
+        });
+    }
+})();

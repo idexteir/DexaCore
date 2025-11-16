@@ -1,0 +1,17 @@
+<div class="crud-modal modal" id="crud-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="crud-form-title">Add Item</h3>
+            <button class="modal-close" onclick="Crud.closeForm()">×</button>
+        </div>
+        <form id="crud-form" class="crud-form">
+            <input type="hidden" name="id" id="crud-form-id">
+            <div id="crud-form-fields"></div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Save</button>
+                <button type="button" class="btn-secondary" onclick="Crud.closeForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+

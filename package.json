@@ -1,0 +1,26 @@
+{
+  "name": "dexacore",
+  "version": "1.0.0",
+  "description": "DexaCore is a modular, extensible front-end framework template for rapid web app prototyping. It features authentication support (via Supabase), customizable modules, and a simple page-based routing structure.",
+  "main": "config.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/idexteir/DexaCore.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/idexteir/DexaCore/issues"
+  },
+  "homepage": "https://github.com/idexteir/DexaCore#readme",
+  "devDependencies": {
+    "vite": "^7.2.2"
+  }
+}

@@ -1,0 +1,11 @@
+column_name,data_type,is_nullable,column_default
+id,uuid,NO,gen_random_uuid()
+user_id,uuid,NO,null
+title,text,NO,null
+description,text,NO,null
+price,numeric,NO,null
+type,text,NO,null
+status,text,NO,null
+location,text,NO,null
+created_at,timestamp with time zone,YES,now()
+updated_at,timestamp with time zone,YES,now()

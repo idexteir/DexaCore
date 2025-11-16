@@ -1,22 +1,33 @@
-window.DexaSupabase = {
+console.log("[Supabase] Loading...");
 
+export const DexaSupabase = {
     client: null,
 
     init() {
-        const cfg = window.DexaCoreConfig.supabase;
+        if (!window.supabase) {
+            console.error("[Supabase] Library not loaded");
+            return;
+        }
 
-        this.client = supabase.createClient(cfg.url, cfg.anonKey, {
-            auth: {
-                persistSession: true,
-                detectSessionInUrl: true
-            }
-        });
+        const config = window.DexaCoreConfig?.supabase;
+        if (!config?.url || !config?.anonKey) {
+            console.error("[Supabase] Configuration missing");
+            return;
+        }
 
-        console.log("[DexaCore] Supabase initialized");
+        try {
+            this.client = window.supabase.createClient(config.url, config.anonKey);
+            console.log("[Supabase] Initialized");
+        } catch (err) {
+            console.error("[Supabase] Init error:", err);
+        }
     },
 
-    async getUser() {
-        const { data } = await this.client.auth.getUser();
-        return data?.user || null;
+    getClient() {
+        return this.client;
     }
 };
+
+console.log("[Supabase] Module loaded");
+
+export default DexaSupabase;

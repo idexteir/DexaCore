@@ -1,48 +1,48 @@
-class DexaRoles {
+console.log("[Roles] Loading...");
+
+export class DexaRoles {
     constructor() {
-        this.roles = {};        // full role → permission mapping
-        this.userRole = null;   // user’s role
-        this.userPermissions = [];
+        this.roles = [];
+        console.log("[Roles] Initialized");
     }
 
-    // Load roles from database
     async loadRoles() {
         try {
-            const data = await DexaCore.supabase.select("roles");
-            data.forEach(r => {
-                this.roles[r.name] = r.permissions || [];
-            });
-        } catch (e) {
-            console.warn("Roles DB not found. Using fallback roles.");
-            this.roles = {
-                admin: ["*"],
-                manager: [],
-                editor: [],
-                user: []
-            };
+            if (!window.Entities) {
+                console.warn("[Roles] Entities not available, using default roles");
+                this.roles = [
+                    { name: "admin", permissions: ["*"] },
+                    { name: "user", permissions: [] }
+                ];
+                return;
+            }
+
+            const roles = await Entities.list("Role");
+            this.roles = roles || [
+                { name: "admin", permissions: ["*"] },
+                { name: "user", permissions: [] }
+            ];
+            
+            console.log("[Roles] Loaded roles:", this.roles);
+        } catch (err) {
+            console.error("[Roles] Failed to load:", err);
+            this.roles = [
+                { name: "admin", permissions: ["*"] },
+                { name: "user", permissions: [] }
+            ];
         }
     }
 
-    // Called after user logs in
-    setUserRole(roleName) {
-        this.userRole = roleName;
-        this.userPermissions = this.roles[roleName] || [];
+    getUserRole() {
+        const user = DexaCore.session?.getUser();
+        if (!user) return null;
+
+        return this.roles.find(r => r.name === user.role) || this.roles.find(r => r.name === "user");
     }
 
-    has(perm) {
-        if (!this.userRole) return false;
-
-        // Admin wildcard
-        if (this.userPermissions.includes("*")) return true;
-
-        return this.userPermissions.includes(perm);
-    }
-
-    require(perm) {
-        if (!this.has(perm)) {
-            DexaCore.router.go("/403");
-            return false;
-        }
-        return true;
+    getAllRoles() {
+        return this.roles;
     }
 }
+
+console.log("[Roles] Module loaded");

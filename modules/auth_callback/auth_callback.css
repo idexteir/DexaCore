@@ -1,0 +1,43 @@
+/* ------------------------------------------------------
+   AUTH CALLBACK PAGE
+----------------------------------------------------------*/
+
+.auth-callback-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    padding: 40px 20px;
+}
+
+.callback-message {
+    text-align: center;
+    max-width: 400px;
+}
+
+.callback-message .loader {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.callback-message h2 {
+    font-size: 1.5rem;
+    color: #1a202c;
+    margin-bottom: 10px;
+}
+
+.callback-message p {
+    color: #718096;
+    font-size: 1rem;
+}
+

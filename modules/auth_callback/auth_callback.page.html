@@ -1,0 +1,53 @@
+<div class="auth-callback-container">
+    <div class="auth-callback-box">
+        <div class="spinner"></div>
+        <h2>Completing Sign In...</h2>
+        <p>Please wait while we authenticate you.</p>
+    </div>
+</div>
+
+<style>
+.auth-callback-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+.auth-callback-box {
+    background: white;
+    padding: 60px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 20px;
+    border: 4px solid #f3f4f6;
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.auth-callback-box h2 {
+    margin: 0 0 10px 0;
+    color: #1f2937;
+}
+
+.auth-callback-box p {
+    margin: 0;
+    color: #6b7280;
+}
+</style>
+

@@ -1,5 +1,5 @@
-class DexaLoading {
-    static show(text = "Loading...") {
+window.DexaLoading = {
+    show(text = "Loading...") {
         if (document.querySelector(".dexacore-loading")) return;
 
         const el = document.createElement("div");
@@ -9,10 +9,10 @@ class DexaLoading {
             <p>${text}</p>
         `;
         document.body.appendChild(el);
-    }
+    },
 
-    static hide() {
+    hide() {
         const el = document.querySelector(".dexacore-loading");
         if (el) el.remove();
     }
-}
+};

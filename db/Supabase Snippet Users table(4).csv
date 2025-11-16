@@ -1,0 +1,8 @@
+column_name,data_type,is_nullable
+id,uuid,NO
+user_id,uuid,NO
+title,text,NO
+content,text,NO
+created_at,timestamp with time zone,YES
+updated_at,timestamp with time zone,YES
+color,text,YES

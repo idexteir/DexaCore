@@ -1,0 +1,136 @@
+/* ------------------------------------------------------
+   UNIVERSAL CRUD UI
+----------------------------------------------------------*/
+
+.crud-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.crud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.crud-header h2 {
+    font-size: 2rem;
+    color: #1a202c;
+    margin: 0;
+}
+
+.crud-filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.crud-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.crud-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.crud-table thead {
+    background: #f7fafc;
+}
+
+.crud-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #1a202c;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.crud-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #4a5568;
+}
+
+.crud-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+.crud-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.crud-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.crud-actions .btn-small {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+}
+
+.crud-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.crud-form {
+    margin-top: 20px;
+}
+
+.crud-form .form-group {
+    margin-bottom: 20px;
+}
+
+.crud-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.crud-form input,
+.crud-form textarea,
+.crud-form select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.crud-form input:focus,
+.crud-form textarea:focus,
+.crud-form select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+@media (max-width: 768px) {
+    .crud-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .crud-table-container {
+        overflow-x: auto;
+    }
+
+    .crud-table {
+        min-width: 600px;
+    }
+}
+

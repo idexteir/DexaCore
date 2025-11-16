@@ -1,18 +1,22 @@
-class DexaForm {
-
-    static getValues(formSelector) {
+window.DexaForm = {
+    getValues(formSelector) {
         const form = document.querySelector(formSelector);
         if (!form) return {};
 
         const data = {};
+        // Include ALL inputs including hidden ones
         form.querySelectorAll("input, textarea, select").forEach(input => {
-            data[input.name] = input.value.trim();
+            if (input.disabled) return; // Skip disabled but NOT hidden
+            
+            const value = input.value?.trim() || "";
+            data[input.name] = value;
         });
 
+        console.log("[DexaForm] getValues result:", data);
         return data;
-    }
+    },
 
-    static validate(rules, values) {
+    validate(rules, values) {
         for (let key in rules) {
             const rule = rules[key];
             const value = values[key];
@@ -31,6 +35,23 @@ class DexaForm {
             }
         }
 
-        return null; // No errors
+        return null;
+    },
+
+    populateDefaults(formSelector, fields) {
+        const form = document.querySelector(formSelector);
+        if (!form) return;
+
+        Object.keys(fields).forEach(fieldName => {
+            const field = fields[fieldName];
+            if (field.default && typeof field.default === 'function') {
+                const input = form.querySelector(`[name="${fieldName}"]`);
+                if (input && !input.value) {
+                    const defaultValue = field.default();
+                    input.value = defaultValue;
+                    console.log(`[DexaForm] Set default ${fieldName} = ${defaultValue}`);
+                }
+            }
+        });
     }
-}
+};

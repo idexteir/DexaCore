@@ -1,16 +1,29 @@
-class DexaPermissions {
+console.log("[Permissions] Loading...");
+
+export class DexaPermissions {
     constructor() {
-        this.current = [];
+        this.permissions = {};
+        console.log("[Permissions] Initialized");
     }
 
-    load(role) {
-        if (!DexaCore.roles) return;
-        this.current = DexaCore.roles.getPermissions(role) || [];
+    can(permission) {
+        const user = DexaCore.session?.getUser();
+        if (!user) return false;
+
+        const userRole = DexaCore.roles?.getUserRole();
+        if (!userRole) return false;
+
+        if (userRole.permissions.includes("*")) return true;
+        return userRole.permissions.includes(permission);
     }
 
-    has(perm) {
-        return this.current.includes(perm);
+    setPermissions(permissions) {
+        this.permissions = permissions;
+    }
+
+    getPermissions() {
+        return this.permissions;
     }
 }
 
-window.DexaPermissions = DexaPermissions;
+console.log("[Permissions] Module loaded");

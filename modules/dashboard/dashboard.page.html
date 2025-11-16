@@ -1,12 +1,62 @@
-<div id="nav"></div>
-
 <div class="dashboard-container">
-    <h2>Dashboard</h2>
+    <!-- Welcome Banner -->
+    <section class="dashboard-banner">
+        <div class="banner-content">
+            <h1>Welcome back, <span id="dashUserName">User</span>!</h1>
+            <p id="dashUserEmail">Loading...</p>
+        </div>
+        <button id="logout-btn">Logout</button>
+    </section>
 
-    <p>Welcome, <span id="dashUserEmail">Loading...</span></p>
+    <!-- Quick Actions -->
+    <section class="dashboard-section">
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+            <button class="action-card" onclick="DexaCore.router.go('properties')">
+                <div class="action-icon">🏠</div>
+                <h3>Properties</h3>
+                <p>Manage your properties</p>
+            </button>
+            <button class="action-card" onclick="DexaCore.router.go('notes')">
+                <div class="action-icon">📝</div>
+                <h3>Notes</h3>
+                <p>View and edit notes</p>
+            </button>
+            <button class="action-card" onclick="DexaCore.router.go('admin')" id="admin-card" style="display: none;">
+                <div class="action-icon">⚙️</div>
+                <h3>Admin Panel</h3>
+                <p>Manage users and settings</p>
+            </button>
+        </div>
+    </section>
 
-    <div class="dashboard-actions">
-        <button onclick="DexaCore.router.go('/properties')">Manage Properties</button>
-        <button onclick="DexaCore.router.go('/notes')">Manage Notes</button>
-    </div>
+    <!-- Modules Overview -->
+    <section class="dashboard-section">
+        <h2>Modules Overview</h2>
+        <div class="modules-grid">
+            <div class="module-card">
+                <h3>Properties</h3>
+                <p>Real estate management system</p>
+                <button class="btn-primary" onclick="DexaCore.router.go('properties')">Open</button>
+            </div>
+            <div class="module-card">
+                <h3>Notes</h3>
+                <p>Personal note-taking system</p>
+                <button class="btn-primary" onclick="DexaCore.router.go('notes')">Open</button>
+            </div>
+            <div class="module-card" id="admin-module-card" style="display: none;">
+                <h3>Admin Panel</h3>
+                <p>User management and settings</p>
+                <button class="btn-primary" onclick="DexaCore.router.go('admin')">Open</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Activity -->
+    <section class="dashboard-section">
+        <h2>Recent Activity</h2>
+        <div class="activity-list" id="activityList">
+            <p class="empty">No recent activity</p>
+        </div>
+    </section>
 </div>
